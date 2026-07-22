@@ -1,0 +1,106 @@
+[gd_scene load_steps=9 format=3 uid="uid://uv7crqb0u7wd"]
+
+[ext_resource type="Script" uid="uid://cpuir4fh1yxqj" path="res://ui/bottom_buttons.gd" id="1_6gs4d"]
+[ext_resource type="Texture2D" uid="uid://0gcmxbly6np4" path="res://images/ui_elements/stats.png" id="1_t0gj0"]
+[ext_resource type="Script" uid="uid://3ewantgfh4ir" path="res://scripts/button_bounce.gd" id="2_6gs4d"]
+[ext_resource type="Texture2D" uid="uid://jtiku0bgt1bv" path="res://images/ui_elements/social_hub_button.png" id="3_t0gj0"]
+[ext_resource type="Texture2D" uid="uid://dox5im40jbvvr" path="res://images/ui_elements/activities.png" id="4_6gs4d"]
+[ext_resource type="Texture2D" uid="uid://dwr1p4umiq7cj" path="res://images/ui_elements/love_book.png" id="5_h170k"]
+[ext_resource type="Texture2D" uid="uid://c33nw53cts5mx" path="res://images/ui_elements/globe.png" id="5_whi7w"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_12345"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.2, 0.2, 0.2, 0.26666668)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6605758, 0.20254576, 0.6639469, 1)
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="BottomButtonsHBox" type="HBoxContainer"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -140.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+theme_override_constants/separation = 15
+alignment = 1
+script = ExtResource("1_6gs4d")
+
+[node name="StatsButton" type="TextureButton" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture_normal = ExtResource("1_t0gj0")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("2_6gs4d")
+
+[node name="ActivitiesButton" type="TextureButton" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture_normal = ExtResource("4_6gs4d")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("2_6gs4d")
+
+[node name="SocialHubButton" type="TextureButton" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture_normal = ExtResource("3_t0gj0")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("2_6gs4d")
+
+[node name="LoveBookButton" type="TextureButton" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture_normal = ExtResource("5_h170k")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("2_6gs4d")
+
+[node name="MapButton" type="TextureButton" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture_normal = ExtResource("5_whi7w")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("2_6gs4d")
+
+[node name="TooltipContainer" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TooltipLabel" type="Label" parent="TooltipContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_12345")
+horizontal_alignment = 1
+vertical_alignment = 1

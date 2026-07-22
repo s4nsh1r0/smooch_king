@@ -1,0 +1,229 @@
+[gd_scene load_steps=26 format=3 uid="uid://crsn817k5h0wp"]
+
+[ext_resource type="Texture2D" uid="uid://yoimfri40lmd" path="res://images/backgrounds/main_menu_bg.png" id="1_0kdh5"]
+[ext_resource type="Script" uid="uid://y8fnkam6rn3r" path="res://scenes/start_scene.gd" id="1_sg87u"]
+[ext_resource type="FontFile" uid="uid://cis4wbw6tq57d" path="res://fonts/Poppins-Bold.ttf" id="2_pevhg"]
+[ext_resource type="Script" uid="uid://demaw3wjdihe4" path="res://scripts/input_box.gd" id="4_2525w"]
+[ext_resource type="FontFile" uid="uid://xvn4s15t33i6" path="res://fonts/LelujaOriginal-Bold.otf" id="5_2525w"]
+[ext_resource type="FontFile" uid="uid://dp2qg218iuweo" path="res://fonts/Poppins-Regular.ttf" id="5_hm208"]
+[ext_resource type="Texture2D" uid="uid://ykatf6kql83w" path="res://images/ui_elements/button_rectangle_depth_gradient.png" id="6_2525w"]
+[ext_resource type="Script" uid="uid://cu7uo4aoyiwd4" path="res://scripts/button_hover.gd" id="7_u6lbi"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yu0ib"]
+texture = ExtResource("6_2525w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6vkx6"]
+texture = ExtResource("6_2525w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2525w"]
+texture = ExtResource("6_2525w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vevxm"]
+texture = ExtResource("6_2525w")
+modulate_color = Color(1, 1, 1, 0.764706)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ffewf"]
+texture = ExtResource("6_2525w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u6lbi"]
+texture = ExtResource("6_2525w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gjhwm"]
+texture = ExtResource("6_2525w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3dgwj"]
+texture = ExtResource("6_2525w")
+modulate_color = Color(1, 1, 1, 0.764706)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2l3yw"]
+texture = ExtResource("6_2525w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2ddlt"]
+texture = ExtResource("6_2525w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8mmw5"]
+texture = ExtResource("6_2525w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o01gw"]
+texture = ExtResource("6_2525w")
+modulate_color = Color(1, 1, 1, 0.764706)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kxwgc"]
+texture = ExtResource("6_2525w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_av76o"]
+texture = ExtResource("6_2525w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lssqi"]
+texture = ExtResource("6_2525w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bjtde"]
+texture = ExtResource("6_2525w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h02k8"]
+texture = ExtResource("6_2525w")
+modulate_color = Color(1, 1, 1, 0.764706)
+
+[node name="StartScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_sg87u")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_0kdh5")
+
+[node name="InputBox" type="LineEdit" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -110.0
+offset_top = -131.0
+offset_right = 290.0
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_placeholder_color = Color(0, 0.733333, 0.886275, 1)
+theme_override_colors/font_color = Color(0, 0.819608, 0.886275, 1)
+theme_override_fonts/font = ExtResource("2_pevhg")
+theme_override_font_sizes/font_size = 28
+placeholder_text = "Enter your name"
+alignment = 1
+max_length = 25
+script = ExtResource("4_2525w")
+
+[node name="EnterMessage" type="Label" parent="InputBox"]
+layout_mode = 0
+offset_left = 103.0
+offset_top = 80.0
+offset_right = 291.0
+offset_bottom = 108.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_hm208")
+text = "Press Enter to continue"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LoadingMessage" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 692.0
+offset_top = 924.0
+offset_right = 1314.0
+offset_bottom = 1039.0
+theme_override_colors/font_color = Color(0.627174, 0.0934705, 0.277899, 1)
+theme_override_fonts/font = ExtResource("2_pevhg")
+theme_override_font_sizes/font_size = 36
+text = "\"Entering Paradise City\""
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TopButtonsContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 270.0
+offset_bottom = 240.0
+theme_override_constants/separation = 20
+
+[node name="NewGameButton" type="Button" parent="TopButtonsContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 100)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("5_2525w")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxTexture_yu0ib")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6vkx6")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_2525w")
+theme_override_styles/normal = SubResource("StyleBoxTexture_vevxm")
+text = "New Game"
+script = ExtResource("7_u6lbi")
+
+[node name="LoadGameButton" type="Button" parent="TopButtonsContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 100)
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_fonts/font = ExtResource("5_2525w")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxTexture_ffewf")
+theme_override_styles/hover = SubResource("StyleBoxTexture_u6lbi")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_gjhwm")
+theme_override_styles/normal = SubResource("StyleBoxTexture_3dgwj")
+text = "Load Game"
+script = ExtResource("7_u6lbi")
+
+[node name="BottomButtonsContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -260.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/separation = 30
+
+[node name="BackButton" type="Button" parent="BottomButtonsContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(250, 100)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_stretch_ratio = 2.0
+theme_override_fonts/font = ExtResource("5_2525w")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxTexture_2l3yw")
+theme_override_styles/hover = SubResource("StyleBoxTexture_2ddlt")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_8mmw5")
+theme_override_styles/normal = SubResource("StyleBoxTexture_o01gw")
+text = "Back"
+script = ExtResource("7_u6lbi")
+
+[node name="ExitButton" type="Button" parent="BottomButtonsContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 100)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 10
+theme_override_fonts/font = ExtResource("5_2525w")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxTexture_kxwgc")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_av76o")
+theme_override_styles/hover = SubResource("StyleBoxTexture_lssqi")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_bjtde")
+theme_override_styles/normal = SubResource("StyleBoxTexture_h02k8")
+text = "Exit"
+script = ExtResource("7_u6lbi")
+
+[connection signal="focus_entered" from="InputBox" to="InputBox" method="_on_focus_entered"]
+[connection signal="focus_exited" from="InputBox" to="InputBox" method="_on_focus_exited"]
+[connection signal="mouse_entered" from="InputBox" to="." method="_on_input_box_mouse_entered"]
+[connection signal="mouse_entered" from="InputBox" to="InputBox" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="InputBox" to="InputBox" method="_on_mouse_exited"]
+[connection signal="text_submitted" from="InputBox" to="." method="_on_name_submitted"]
+[connection signal="pressed" from="TopButtonsContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="BottomButtonsContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="BottomButtonsContainer/ExitButton" to="." method="_on_exit_button_pressed"]

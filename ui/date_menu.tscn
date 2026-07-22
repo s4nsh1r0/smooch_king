@@ -1,0 +1,470 @@
+[gd_scene load_steps=9 format=3 uid="uid://b0g4frlje7b3a"]
+
+[ext_resource type="Script" uid="uid://d35n5bquae7ab" path="res://ui/date_menu.gd" id="1_we8uj"]
+[ext_resource type="FontFile" uid="uid://tfa6io7nwn2a" path="res://fonts/NotoSans-Regular.ttf" id="2_ow7na"]
+[ext_resource type="FontFile" uid="uid://cvx4gvjinps37" path="res://fonts/LelujaOriginal-Italic.otf" id="2_x1b2k"]
+[ext_resource type="FontFile" uid="uid://6elxvpe41nfh" path="res://fonts/NotoColorEmoji-Regular.ttf" id="3_emoji"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_main"]
+bg_color = Color(0.12, 0.12, 0.16, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.3, 0.4, 0.8)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 12
+shadow_offset = Vector2(2, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.2, 0.2, 0.25, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.4, 0.5, 0.6)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_pressed"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.15, 0.15, 0.2, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5, 0.5, 0.6, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.3, 0.3, 0.4, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6, 0.6, 0.7, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="DateMenu" type="PanelContainer"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_main")
+script = ExtResource("1_we8uj")
+
+[node name="MainContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="ButtonContainer" type="VBoxContainer" parent="MainContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="HeaderLabel" type="Label" parent="MainContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
+theme_override_fonts/font = ExtResource("2_ow7na")
+theme_override_font_sizes/font_size = 32
+text = "Choose Your Date ✨"
+horizontal_alignment = 1
+
+[node name="Spacer1" type="Control" parent="MainContainer/ButtonContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="DinnerButton" type="Button" parent="MainContainer/ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
+theme_override_colors/font_pressed_color = Color(0.8, 0.8, 0.85, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.4, 0.4, 0.4, 1)
+theme_override_fonts/font = ExtResource("3_emoji")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/ButtonContainer/DinnerButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="EmojiLabel" type="Label" parent="MainContainer/ButtonContainer/DinnerButton/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_emoji")
+theme_override_font_sizes/font_size = 22
+text = "🍽️"
+vertical_alignment = 1
+
+[node name="TextLabel" type="Label" parent="MainContainer/ButtonContainer/DinnerButton/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ow7na")
+theme_override_font_sizes/font_size = 22
+text = "Dinner"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ParkButton" type="Button" parent="MainContainer/ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
+theme_override_colors/font_pressed_color = Color(0.8, 0.8, 0.85, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.4, 0.4, 0.4, 1)
+theme_override_fonts/font = ExtResource("3_emoji")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/ButtonContainer/ParkButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="EmojiLabel" type="Label" parent="MainContainer/ButtonContainer/ParkButton/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_emoji")
+theme_override_font_sizes/font_size = 22
+text = "🌳"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextLabel" type="Label" parent="MainContainer/ButtonContainer/ParkButton/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ow7na")
+theme_override_font_sizes/font_size = 22
+text = "Park"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BeachButton" type="Button" parent="MainContainer/ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
+theme_override_colors/font_pressed_color = Color(0.8, 0.8, 0.85, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.4, 0.4, 0.4, 1)
+theme_override_fonts/font = ExtResource("3_emoji")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/ButtonContainer/BeachButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="EmojiLabel" type="Label" parent="MainContainer/ButtonContainer/BeachButton/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_emoji")
+theme_override_font_sizes/font_size = 22
+text = "🏖️"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextLabel" type="Label" parent="MainContainer/ButtonContainer/BeachButton/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ow7na")
+theme_override_font_sizes/font_size = 22
+text = "Beach"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HomeButton" type="Button" parent="MainContainer/ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
+theme_override_colors/font_pressed_color = Color(0.8, 0.8, 0.85, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.4, 0.4, 0.4, 1)
+theme_override_fonts/font = ExtResource("3_emoji")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/ButtonContainer/HomeButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="EmojiLabel" type="Label" parent="MainContainer/ButtonContainer/HomeButton/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_emoji")
+theme_override_font_sizes/font_size = 22
+text = "🏠"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextLabel" type="Label" parent="MainContainer/ButtonContainer/HomeButton/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ow7na")
+theme_override_font_sizes/font_size = 22
+text = "Home"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KissButton" type="Button" parent="MainContainer/ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
+theme_override_colors/font_pressed_color = Color(0.8, 0.8, 0.85, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.4, 0.4, 0.4, 1)
+theme_override_fonts/font = ExtResource("3_emoji")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/ButtonContainer/KissButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="EmojiLabel" type="Label" parent="MainContainer/ButtonContainer/KissButton/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_emoji")
+theme_override_font_sizes/font_size = 22
+text = "💋"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextLabel" type="Label" parent="MainContainer/ButtonContainer/KissButton/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ow7na")
+theme_override_font_sizes/font_size = 22
+text = "Kiss"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer2" type="Control" parent="MainContainer/ButtonContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="CloseMenuButton" type="Button" parent="MainContainer/ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.5, 0.5, 1)
+theme_override_colors/font_pressed_color = Color(0.8, 0.4, 0.4, 1)
+theme_override_colors/font_hover_color = Color(1, 0.6, 0.6, 1)
+theme_override_fonts/font = ExtResource("3_emoji")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/ButtonContainer/CloseMenuButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="EmojiLabel" type="Label" parent="MainContainer/ButtonContainer/CloseMenuButton/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_emoji")
+theme_override_font_sizes/font_size = 20
+text = "❌"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextLabel" type="Label" parent="MainContainer/ButtonContainer/CloseMenuButton/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ow7na")
+theme_override_font_sizes/font_size = 20
+text = "Close"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DatePopup" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PopupBackground" type="ColorRect" parent="DatePopup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.8)
+
+[node name="CenterContainer" type="CenterContainer" parent="DatePopup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PopupPanel" type="PanelContainer" parent="DatePopup/CenterContainer"]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(1240, 1000)
+layout_mode = 2
+
+[node name="PopupContent" type="VBoxContainer" parent="DatePopup/CenterContainer/PopupPanel"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="ImageContainer" type="Control" parent="DatePopup/CenterContainer/PopupPanel/PopupContent"]
+custom_minimum_size = Vector2(1200, 900)
+layout_mode = 2
+
+[node name="BorderPanel" type="Panel" parent="DatePopup/CenterContainer/PopupPanel/PopupContent/ImageContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="DateImage" type="TextureRect" parent="DatePopup/CenterContainer/PopupPanel/PopupContent/ImageContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 3
+stretch_mode = 6
+
+[node name="DateTitle" type="Label" parent="DatePopup/CenterContainer/PopupPanel/PopupContent/ImageContainer"]
+unique_name_in_owner = true
+layout_mode = 0
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 70.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_fonts/font = ExtResource("2_x1b2k")
+theme_override_font_sizes/font_size = 36
+text = "Date Title"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CountdownLabel" type="RichTextLabel" parent="DatePopup/CenterContainer/PopupPanel/PopupContent/ImageContainer"]
+unique_name_in_owner = true
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -60.0
+offset_right = 100.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 0.5, 1)
+theme_override_fonts/normal_font = ExtResource("3_emoji")
+bbcode_enabled = true
+text = "[font_size=32][center][color=#FFFF80][outline_size=3][outline_color=black]5[/outline_color][/outline_size][/color][/center][/font_size]"
+fit_content = true
+scroll_active = false
+
+[node name="ButtonContainer" type="HBoxContainer" parent="DatePopup/CenterContainer/PopupPanel/PopupContent"]
+layout_mode = 2
+alignment = 1
+
+[node name="PopupCloseButton" type="Button" parent="DatePopup/CenterContainer/PopupPanel/PopupContent/ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 60)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
+theme_override_colors/font_pressed_color = Color(0.8, 0.8, 0.85, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_emoji")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "❌ Close"

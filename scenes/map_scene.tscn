@@ -1,0 +1,125 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfvy2osoguqdi"]
+
+[ext_resource type="Texture2D" uid="uid://bnixniflsyss8" path="res://images/backgrounds/city_map_bg.png" id="1_pbrhm"]
+[ext_resource type="Script" uid="uid://dghnaj5r6gu5y" path="res://scenes/map_locations_buttons.gd" id="2_3lmvi"]
+
+[node name="MapScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="MapBackground" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_pbrhm")
+expand_mode = 1
+
+[node name="HomeButton" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 114.0
+offset_top = 498.0
+offset_right = 421.0
+offset_bottom = 659.0
+script = ExtResource("2_3lmvi")
+location_name = "Home"
+click_color = Color(0.176471, 0.176471, 0, 0.827451)
+
+[node name="LibraryButton" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1551.0
+offset_top = 358.0
+offset_right = 1864.0
+offset_bottom = 517.0
+script = ExtResource("2_3lmvi")
+location_name = "Library"
+click_color = Color(0.396078, 0.0666667, 0.207843, 0.878431)
+
+[node name="GymButton" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1393.0
+offset_top = 511.0
+offset_right = 1653.0
+offset_bottom = 698.0
+script = ExtResource("2_3lmvi")
+location_name = "Gym"
+click_color = Color(0.121569, 0.298039, 0.262745, 0.847059)
+
+[node name="MallButton" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1131.0
+offset_top = 708.0
+offset_right = 1527.0
+offset_bottom = 961.0
+script = ExtResource("2_3lmvi")
+location_name = "Mall"
+click_color = Color(0.371693, 0.15419, 0.124458, 0.607843)
+
+[node name="UniversityButton" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1230.0
+offset_top = 141.0
+offset_right = 1591.0
+offset_bottom = 382.0
+script = ExtResource("2_3lmvi")
+location_name = "University"
+click_color = Color(0.160784, 0.211765, 0.490196, 0.862745)
+
+[node name="NightclubButton" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1660.0
+offset_top = 546.0
+offset_right = 1918.0
+offset_bottom = 841.0
+script = ExtResource("2_3lmvi")
+location_name = "Nightclub"
+click_color = Color(1, 0.501961, 0, 0.85098)
+
+[node name="ParkButton" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 670.0
+offset_top = 425.0
+offset_right = 1131.0
+offset_bottom = 647.0
+script = ExtResource("2_3lmvi")
+location_name = "Park"
+click_color = Color(0.435294, 0.211765, 0.0431373, 0.862745)
+
+[node name="CafeteriaButton" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 114.0
+offset_top = 806.0
+offset_right = 429.0
+offset_bottom = 1033.0
+script = ExtResource("2_3lmvi")
+location_name = "Cafeteria"
+click_color = Color(0.236891, 0.288201, 0.160838, 0.839216)
+
+[node name="CinemaButton" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1525.0
+offset_top = 869.0
+offset_right = 1860.0
+offset_bottom = 1077.0
+script = ExtResource("2_3lmvi")
+location_name = "Cinema"
+click_color = Color(0.407843, 0.156863, 0.137255, 0.87451)
+
+[node name="JobcenterButton" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 785.0
+offset_top = 240.0
+offset_right = 1075.0
+offset_bottom = 382.0
+script = ExtResource("2_3lmvi")
+location_name = "Job Center"
+click_color = Color(0.231373, 0.368627, 0.192157, 0.85098)
