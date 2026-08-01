@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://dq71om3v772kv"]
+[gd_scene format=3 uid="uid://dq71om3v772kv"]
 
-[ext_resource type="Texture2D" uid="uid://daq4wa4uqokm6" path="res://images/backgrounds/cinema_bg.png" id="1_uwsg3"]
+[ext_resource type="Texture2D" uid="uid://cd46n2pk7mcb2" path="res://assets/images/backgrounds/cinema_bg.jpg" id="1_wdwwa"]
 
-[node name="CinemaScreen" type="Control"]
+[node name="CinemaScreen" type="Control" unique_id=758334020]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,11 +11,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1431362281]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_uwsg3")
+texture = ExtResource("1_wdwwa")

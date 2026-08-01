@@ -2,7 +2,7 @@
 *.import
 *.remap
 export_presets.cfg
-*.godot
+# *.godot
 .DS_Store
 Thumbs.db
 temp/

@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://ygeltm105d3k"]
+[gd_scene format=3 uid="uid://ygeltm105d3k"]
 
-[ext_resource type="Texture2D" uid="uid://ddtc282bqal1a" path="res://images/backgrounds/mall_bg.png" id="1_ipgkn"]
+[ext_resource type="Texture2D" uid="uid://cwse4lid2gyva" path="res://assets/images/backgrounds/mall_bg.jpg" id="1_2x6qn"]
 
-[node name="MallScreen" type="Control"]
+[node name="MallScreen" type="Control" unique_id=1561211216]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,11 +11,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="MallBackground" type="TextureRect" parent="."]
+[node name="MallBackground" type="TextureRect" parent="." unique_id=691205022]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_ipgkn")
+texture = ExtResource("1_2x6qn")

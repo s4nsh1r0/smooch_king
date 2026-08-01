@@ -1,0 +1,304 @@
+[gd_scene format=3 uid="uid://crsn817k5h0wp"]
+
+[ext_resource type="Script" uid="uid://y8fnkam6rn3r" path="res://scenes/main/start_scene.gd" id="1_sg87u"]
+[ext_resource type="Texture2D" uid="uid://dli6wt5a178ot" path="res://assets/images/backgrounds/main_menu_bg.jpg" id="2_2525w"]
+[ext_resource type="FontFile" uid="uid://cis4wbw6tq57d" path="res://assets/fonts/Poppins-Bold.ttf" id="2_pevhg"]
+[ext_resource type="Script" uid="uid://dfjrjrn3xoxx5" path="res://scripts/components/input_box.gd" id="4_2525w"]
+[ext_resource type="FontFile" uid="uid://xvn4s15t33i6" path="res://assets/fonts/LelujaOriginal-Bold.otf" id="5_2525w"]
+[ext_resource type="Script" uid="uid://dqkdwh1ask7cy" path="res://scripts/components/button_hover.gd" id="7_u6lbi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_new_game"]
+content_margin_left = 24.0
+content_margin_top = 18.0
+content_margin_right = 24.0
+content_margin_bottom = 18.0
+bg_color = Color(0.95, 0.32, 0.55, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.7, 0.82, 0.9)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.85, 0.15, 0.4, 0.45)
+shadow_size = 10
+shadow_offset = Vector2(0, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_new_game_hover"]
+content_margin_left = 24.0
+content_margin_top = 18.0
+content_margin_right = 24.0
+content_margin_bottom = 18.0
+bg_color = Color(1, 0.42, 0.65, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.85, 0.92, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.95, 0.25, 0.5, 0.55)
+shadow_size = 14
+shadow_offset = Vector2(0, 7)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_load"]
+content_margin_left = 22.0
+content_margin_top = 15.0
+content_margin_right = 22.0
+content_margin_bottom = 15.0
+bg_color = Color(0.72, 0.38, 0.72, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9, 0.7, 0.95, 0.8)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0.5, 0.2, 0.6, 0.4)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_load_hover"]
+content_margin_left = 22.0
+content_margin_top = 15.0
+content_margin_right = 22.0
+content_margin_bottom = 15.0
+bg_color = Color(0.82, 0.48, 0.82, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.85, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0.6, 0.3, 0.7, 0.5)
+shadow_size = 11
+shadow_offset = Vector2(0, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_exit"]
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
+bg_color = Color(0.5, 0.22, 0.38, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.5, 0.65, 0.7)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0.3, 0.1, 0.2, 0.4)
+shadow_size = 6
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_exit_hover"]
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
+bg_color = Color(0.65, 0.3, 0.48, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.7, 0.8, 0.9)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0.4, 0.15, 0.3, 0.5)
+shadow_size = 9
+shadow_offset = Vector2(0, 4)
+
+[node name="StartScene" type="Control" unique_id=2005439949]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_sg87u")
+
+[node name="Background" type="TextureRect" parent="." unique_id=811117942]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_2525w")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="LoadingMessage" type="Label" parent="." unique_id=937388593]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -180.0
+offset_right = 300.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.83143556, 0.13207367, 0.53162575, 1)
+theme_override_fonts/font = ExtResource("2_pevhg")
+theme_override_font_sizes/font_size = 32
+text = "Entering Paradise City..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TopButtonsContainer" type="VBoxContainer" parent="." unique_id=241165360]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = 180.0
+offset_right = 140.0
+offset_bottom = 420.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="NewGameButton" type="Button" parent="TopButtonsContainer" unique_id=1448103664]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 90)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("5_2525w")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_new_game")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_new_game")
+theme_override_styles/hover = SubResource("StyleBoxFlat_new_game_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_new_game")
+text = "New Game"
+script = ExtResource("7_u6lbi")
+
+[node name="LoadGameButton" type="Button" parent="TopButtonsContainer" unique_id=1796416628]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 80)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("5_2525w")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_load")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_load")
+theme_override_styles/hover = SubResource("StyleBoxFlat_load_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_load")
+text = "Load Game"
+script = ExtResource("7_u6lbi")
+
+[node name="NameEntryContainer" type="HBoxContainer" parent="." unique_id=2093356174]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -160.0
+offset_right = 280.0
+offset_bottom = -70.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="InputBox" type="LineEdit" parent="NameEntryContainer" unique_id=2113865681]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 70)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.95, 1)
+theme_override_colors/font_placeholder_color = Color(1, 0.75, 0.85, 0.7)
+theme_override_fonts/font = ExtResource("2_pevhg")
+theme_override_font_sizes/font_size = 26
+placeholder_text = "Enter your name"
+alignment = 1
+max_length = 25
+script = ExtResource("4_2525w")
+
+[node name="ConfirmButton" type="Button" parent="NameEntryContainer" unique_id=1813261046]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 70)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("5_2525w")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_new_game")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_new_game")
+theme_override_styles/hover = SubResource("StyleBoxFlat_new_game_hover")
+text = "Start"
+script = ExtResource("7_u6lbi")
+
+[node name="BottomButtonsContainer" type="VBoxContainer" parent="." unique_id=1434778264]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -220.0
+offset_top = -160.0
+offset_right = -40.0
+offset_bottom = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/separation = 18
+
+[node name="BackButton" type="Button" parent="BottomButtonsContainer" unique_id=646089068]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(180, 70)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("5_2525w")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_exit")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_exit")
+theme_override_styles/hover = SubResource("StyleBoxFlat_exit_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_exit")
+text = "Back"
+script = ExtResource("7_u6lbi")
+
+[node name="ExitButton" type="Button" parent="BottomButtonsContainer" unique_id=1016055360]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 70)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("5_2525w")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_exit")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_exit")
+theme_override_styles/hover = SubResource("StyleBoxFlat_exit_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_exit")
+text = "Exit"
+script = ExtResource("7_u6lbi")
+
+[connection signal="pressed" from="TopButtonsContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="text_submitted" from="NameEntryContainer/InputBox" to="." method="_on_name_submitted"]
+[connection signal="pressed" from="NameEntryContainer/ConfirmButton" to="." method="_on_confirm_pressed"]
+[connection signal="pressed" from="BottomButtonsContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="BottomButtonsContainer/ExitButton" to="." method="_on_exit_button_pressed"]

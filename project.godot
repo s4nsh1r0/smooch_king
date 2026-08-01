@@ -21,11 +21,12 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-PlayerData="*res://managers/player_data.gd"
-LocationManager="*res://managers/location_manager.gd"
-GameManager="*res://managers/game_manager.gd"
-UIManager="*res://managers/ui_manager.gd"
-SaveManager="*res://managers/save_manager.gd"
+PlayerData="*res://core/systems/player_data.gd"
+LocationManager="*res://core/systems/location_manager.gd"
+GameManager="*res://core/systems/game_manager.gd"
+UIManager="*res://core/systems/ui_manager.gd"
+SaveManager="*res://core/systems/save_manager.gd"
+CharacterDatabase="*res://core/data/character_database.gd"
 
 [display]
 

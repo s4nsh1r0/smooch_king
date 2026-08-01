@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://dloapm0vrgu5s"]
+[gd_scene format=3 uid="uid://dloapm0vrgu5s"]
 
-[ext_resource type="Texture2D" uid="uid://digj8igp2ycn1" path="res://images/backgrounds/library_bg.png" id="1_2mfhs"]
+[ext_resource type="Texture2D" uid="uid://cit1sgn0d3rye" path="res://assets/images/backgrounds/library_bg.jpg" id="1_3ri3y"]
 
-[node name="LibraryScreen" type="Control"]
+[node name="LibraryScreen" type="Control" unique_id=856983811]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,11 +11,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="LibraryBackground" type="TextureRect" parent="."]
+[node name="LibraryBackground" type="TextureRect" parent="." unique_id=964525978]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_2mfhs")
+texture = ExtResource("1_3ri3y")

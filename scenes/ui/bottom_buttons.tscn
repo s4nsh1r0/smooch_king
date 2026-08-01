@@ -1,0 +1,187 @@
+[gd_scene format=3 uid="uid://uv7crqb0u7wd"]
+
+[ext_resource type="Script" uid="uid://cpuir4fh1yxqj" path="res://scenes/ui/bottom_buttons.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://0gcmxbly6np4" path="res://assets/images/ui_elements/stats.png" id="2_stats"]
+[ext_resource type="Script" uid="uid://bup3f5db2ygml" path="res://scripts/components/button_raise.gd" id="3_raise"]
+[ext_resource type="Texture2D" uid="uid://dox5im40jbvvr" path="res://assets/images/ui_elements/activities.png" id="4_activities"]
+[ext_resource type="Texture2D" uid="uid://jtiku0bgt1bv" path="res://assets/images/ui_elements/social_hub_button.png" id="5_social"]
+[ext_resource type="Texture2D" uid="uid://dwr1p4umiq7cj" path="res://assets/images/ui_elements/love_book.png" id="6_love"]
+[ext_resource type="Texture2D" uid="uid://c33nw53cts5mx" path="res://assets/images/ui_elements/globe.png" id="7_map"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glow"]
+bg_color = Color(0.95, 0.35, 0.55, 0.25)
+corner_radius_top_left = 60
+corner_radius_top_right = 60
+corner_radius_bottom_right = 60
+corner_radius_bottom_left = 60
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tooltip"]
+content_margin_left = 14.0
+content_margin_top = 7.0
+content_margin_right = 14.0
+content_margin_bottom = 7.0
+bg_color = Color(0.55, 0.22, 0.4, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.75, 0.85, 0.6)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="BottomButtonsHBox" type="HBoxContainer" unique_id=749811363]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -150.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 22
+alignment = 1
+script = ExtResource("1_script")
+
+[node name="StatsButton" type="TextureButton" parent="." unique_id=540579785]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 110)
+layout_mode = 2
+texture_normal = ExtResource("2_stats")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_raise")
+
+[node name="StatsGlow" type="Panel" parent="StatsButton" unique_id=195420253]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -55.0
+offset_top = -55.0
+offset_right = 55.0
+offset_bottom = 55.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_glow")
+
+[node name="ActivitiesButton" type="TextureButton" parent="." unique_id=1826122472]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 110)
+layout_mode = 2
+texture_normal = ExtResource("4_activities")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_raise")
+
+[node name="ActivitiesGlow" type="Panel" parent="ActivitiesButton" unique_id=534348930]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -55.0
+offset_top = -55.0
+offset_right = 55.0
+offset_bottom = 55.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_glow")
+
+[node name="SocialHubButton" type="TextureButton" parent="." unique_id=1866224954]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 110)
+layout_mode = 2
+texture_normal = ExtResource("5_social")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_raise")
+
+[node name="SocialGlow" type="Panel" parent="SocialHubButton" unique_id=548585397]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -55.0
+offset_top = -55.0
+offset_right = 55.0
+offset_bottom = 55.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_glow")
+
+[node name="LoveBookButton" type="TextureButton" parent="." unique_id=1733729801]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 110)
+layout_mode = 2
+texture_normal = ExtResource("6_love")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_raise")
+
+[node name="LoveGlow" type="Panel" parent="LoveBookButton" unique_id=2110469765]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -55.0
+offset_top = -55.0
+offset_right = 55.0
+offset_bottom = 55.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_glow")
+
+[node name="MapButton" type="TextureButton" parent="." unique_id=179998483]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 110)
+layout_mode = 2
+texture_normal = ExtResource("7_map")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_raise")
+
+[node name="MapGlow" type="Panel" parent="MapButton" unique_id=418040220]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -55.0
+offset_top = -55.0
+offset_right = 55.0
+offset_bottom = 55.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_glow")
+
+[node name="TooltipContainer" type="Control" parent="." unique_id=700893002]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TooltipLabel" type="Label" parent="TooltipContainer" unique_id=1675297591]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+theme_override_colors/font_color = Color(1, 0.95, 0.97, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_tooltip")
+horizontal_alignment = 1
+vertical_alignment = 1

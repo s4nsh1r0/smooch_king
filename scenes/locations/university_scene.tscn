@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://didabkgxojts0"]
+[gd_scene format=3 uid="uid://didabkgxojts0"]
 
-[ext_resource type="Texture2D" uid="uid://drfj7r028x5r1" path="res://images/backgrounds/university_bg.png" id="1_fjn02"]
+[ext_resource type="Texture2D" uid="uid://dgeveabcp4osd" path="res://assets/images/backgrounds/university_bg.jpg" id="1_c7ct7"]
 
-[node name="UniversityScreen" type="Control"]
+[node name="UniversityScreen" type="Control" unique_id=1240109596]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,11 +11,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="UniversityBackground" type="TextureRect" parent="."]
+[node name="UniversityBackground" type="TextureRect" parent="." unique_id=465941710]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_fjn02")
+texture = ExtResource("1_c7ct7")

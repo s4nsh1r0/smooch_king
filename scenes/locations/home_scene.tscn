@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bbq7gn80vdevp"]
+[gd_scene format=3 uid="uid://bbq7gn80vdevp"]
 
-[ext_resource type="Texture2D" uid="uid://5xls7fs33cuj" path="res://images/backgrounds/room_bg.png" id="1_ujmiq"]
+[ext_resource type="Texture2D" uid="uid://cpn208bxr7wv5" path="res://assets/images/backgrounds/room_bg.jpg" id="1_e1rea"]
 
-[node name="Home" type="Control"]
+[node name="Home" type="Control" unique_id=885127004]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,11 +11,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="HomeBackground" type="TextureRect" parent="."]
+[node name="HomeBackground" type="TextureRect" parent="." unique_id=78434869]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_ujmiq")
+texture = ExtResource("1_e1rea")

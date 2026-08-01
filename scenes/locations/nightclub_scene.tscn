@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://d1ewhgwcd5yle"]
+[gd_scene format=3 uid="uid://d1ewhgwcd5yle"]
 
-[ext_resource type="Texture2D" uid="uid://dbnmnd1oh37y2" path="res://images/backgrounds/nightclub_bg.png" id="1_rgye2"]
+[ext_resource type="Texture2D" uid="uid://dj6jl642jynt7" path="res://assets/images/backgrounds/nightclub_bg.jpg" id="1_qf2t3"]
 
-[node name="NightclubScreen" type="Control"]
+[node name="NightclubScreen" type="Control" unique_id=2071643421]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,11 +11,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="NightclubBackground" type="TextureRect" parent="."]
+[node name="NightclubBackground" type="TextureRect" parent="." unique_id=432670614]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_rgye2")
+texture = ExtResource("1_qf2t3")

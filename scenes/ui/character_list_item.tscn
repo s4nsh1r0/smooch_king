@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://6t1fvl8xoyby"]
+
+[ext_resource type="FontFile" uid="uid://dp2qg218iuweo" path="res://assets/fonts/Poppins-Regular.ttf" id="1_d0hoy"]
+[ext_resource type="Script" uid="uid://dxima0vv3rodr" path="res://scenes/ui/character_list_item.gd" id="2_547p8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_available"]
+content_margin_left = 14.0
+content_margin_top = 10.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(0.55, 0.3, 0.7, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.7, 1, 0.85)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0.4, 0.15, 0.55, 0.4)
+shadow_size = 6
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pressed"]
+content_margin_left = 14.0
+content_margin_top = 10.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(0.45, 0.22, 0.6, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.85, 0.6, 0.95, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_available_hover"]
+content_margin_left = 14.0
+content_margin_top = 10.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(0.65, 0.38, 0.8, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.8, 1, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0.5, 0.2, 0.7, 0.5)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_locked"]
+content_margin_left = 14.0
+content_margin_top = 10.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(0.28, 0.18, 0.32, 0.75)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.35, 0.55, 0.6)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[node name="CharacterListItem" type="Button" unique_id=699732170]
+custom_minimum_size = Vector2(0, 60)
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("1_d0hoy")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_available")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_available_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_locked")
+script = ExtResource("2_547p8")
+
+[node name="Content" type="HBoxContainer" parent="." unique_id=1968642241]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InfoContainer" type="VBoxContainer" parent="Content" unique_id=1585446572]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TopRow" type="HBoxContainer" parent="Content/InfoContainer" unique_id=1429926393]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CharacterNameLabel" type="Label" parent="Content/InfoContainer/TopRow" unique_id=1749233675]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("1_d0hoy")
+theme_override_font_sizes/font_size = 18
+text = "Character Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatusIcon" type="Label" parent="Content/InfoContainer/TopRow" unique_id=1791838666]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_d0hoy")
+theme_override_font_sizes/font_size = 16
+text = "✓"
+vertical_alignment = 1
+
+[node name="UnlockInfoLabel" type="Label" parent="Content/InfoContainer" unique_id=69267129]
+unique_name_in_owner = true
+modulate = Color(1, 0.8, 0.6, 0.9)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(1, 0.8, 0.6, 0.9)
+theme_override_fonts/font = ExtResource("1_d0hoy")
+theme_override_font_sizes/font_size = 12
+text = "Requirements:"
+
+[node name="ProgressBarsContainer" type="VBoxContainer" parent="Content/InfoContainer" unique_id=562460788]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
