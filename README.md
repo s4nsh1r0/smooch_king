@@ -48,5 +48,4 @@ Work in progress. Core loop, UI, jobs, AP, relationships, and first minigames ar
 
 ## Credits
 
-| Game design & development| — | s4nsh1r0 |
-| Engine| — | Godot Engine |
+- Game design & development — s4nsh1r0
