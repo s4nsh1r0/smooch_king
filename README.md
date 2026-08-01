@@ -41,6 +41,22 @@ Train stats, work jobs, meet characters around the city, and build relationships
 3. Open Godot → Import → select the project folder → Open.
 4. Press F5 (or Play) to run.
 
+## Download & play
+
+You do **not** need the Godot editor to play a release build.
+
+### Latest release
+
+When builds are uploaded, get them here:
+
+**[Releases](https://github.com/s4nsh1r0/smooch_king/releases)**
+
+| Platform | File |
+|----------|------|
+| Windows | `SmoochKing.exe` |
+
+Run un the executable. Saves are stored in the user data folder.
+
 
 ## Status
 Work in progress. Core loop, UI, jobs, AP, relationships, and first minigames are playable. Balancing, more characters, and extra location minigames are ongoing.
@@ -48,4 +64,4 @@ Work in progress. Core loop, UI, jobs, AP, relationships, and first minigames ar
 
 ## Credits
 
-- Game design & development — s4nsh1r0
+Game design & development — s4nsh1r0
