@@ -38,13 +38,15 @@ Train stats, work jobs, meet characters around the city, and build relationships
 2. Clone this repo:
    ```bash
    git clone https://github.com/s4nsh1r0/smooch_king.git
+3. Open Godot → Import → select the project folder → Open.
+4. Press F5 (or Play) to run.
 
 
-Status
+## Status
 Work in progress. Core loop, UI, jobs, AP, relationships, and first minigames are playable. Balancing, more characters, and extra location minigames are ongoing.
 
 
-Credits
+## Credits
 
 Game design & development — s4nsh1r0
 Engine — Godot Engine
