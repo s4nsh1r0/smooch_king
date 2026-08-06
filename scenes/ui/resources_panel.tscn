@@ -1,98 +1,119 @@
-[gd_scene format=3 uid="uid://dokl7ff42jvte"]
+[gd_scene format=3 uid="uid://dfau8rsjckb8o"]
 
 [ext_resource type="FontFile" uid="uid://cis4wbw6tq57d" path="res://assets/fonts/Poppins-Bold.ttf" id="1_font"]
-[ext_resource type="Script" uid="uid://dtoyrjt51gub3" path="res://scenes/ui/resources_panel.gd" id="1_jyka0"]
+[ext_resource type="Script" uid="uid://dtoyrjt51gub3" path="res://scenes/ui/resources_panel.gd" id="2_script"]
+[ext_resource type="Texture2D" uid="uid://28u0lg3fmm13" path="res://assets/images/ui_elements/coin_icon.png" id="3_coin"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
-content_margin_left = 16.0
-content_margin_top = 12.0
-content_margin_right = 16.0
-content_margin_bottom = 12.0
-bg_color = Color(0.55, 0.22, 0.4, 0.92)
+[sub_resource type="StyleBoxFlat" id="PanelStyle"]
+content_margin_left = 18.0
+content_margin_top = 13.0
+content_margin_right = 18.0
+content_margin_bottom = 13.0
+bg_color = Color(0.22, 0.12, 0.3, 0.95)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 0.7, 0.85, 0.5)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0.4, 0.1, 0.25, 0.4)
-shadow_size = 10
+border_color = Color(1, 0.72, 0.92, 0.78)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color(0.3, 0.06, 0.24, 0.48)
+shadow_size = 14
 shadow_offset = Vector2(0, 4)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ap_bg"]
+[sub_resource type="StyleBoxFlat" id="APPanelStyle"]
 content_margin_left = 12.0
-content_margin_top = 8.0
+content_margin_top = 9.0
 content_margin_right = 12.0
-content_margin_bottom = 8.0
-bg_color = Color(0.25, 0.12, 0.2, 0.9)
+content_margin_bottom = 9.0
+bg_color = Color(0.16, 0.08, 0.19, 0.92)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.8, 0.5, 0.65, 0.4)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+border_color = Color(0.85, 0.48, 0.7, 0.55)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
-bg_color = Color(0.15, 0.08, 0.14, 0.95)
+[sub_resource type="StyleBoxFlat" id="BarBackground"]
+bg_color = Color(0.1, 0.045, 0.11, 0.96)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
-bg_color = Color(0.95, 0.55, 0.85, 0.95)
+[sub_resource type="StyleBoxFlat" id="BarFill"]
+bg_color = Color(0.94, 0.48, 0.82, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="ResourcesPanel" type="PanelContainer" unique_id=1400134122]
-custom_minimum_size = Vector2(280, 0)
-theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
-script = ExtResource("1_jyka0")
+[node name="ResourcesPanel" type="PanelContainer" unique_id=14511356]
+custom_minimum_size = Vector2(300, 0)
+theme_override_styles/panel = SubResource("PanelStyle")
+script = ExtResource("2_script")
 
-[node name="ResourcesContainer" type="VBoxContainer" parent="." unique_id=1200134141]
+[node name="ResourcesContainer" type="VBoxContainer" parent="." unique_id=251658452]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="MoneyLabel" type="Label" parent="ResourcesContainer" unique_id=1295484591]
+[node name="MoneyRow" type="HBoxContainer" parent="ResourcesContainer" unique_id=451804967]
+layout_mode = 2
+theme_override_constants/separation = 9
+alignment = 1
+
+[node name="MoneyIcon" type="TextureRect" parent="ResourcesContainer/MoneyRow" unique_id=1229020691]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("3_coin")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MoneyLabel" type="Label" parent="ResourcesContainer/MoneyRow" unique_id=1814317250]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.97, 1)
+theme_override_colors/font_color = Color(1, 0.94, 0.98, 1)
+theme_override_colors/font_shadow_color = Color(0.18, 0.04, 0.14, 0.85)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("1_font")
 theme_override_font_sizes/font_size = 22
-text = "Money: $0.00"
-horizontal_alignment = 1
-
-[node name="APPanel" type="PanelContainer" parent="ResourcesContainer" unique_id=1619534765]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ap_bg")
-
-[node name="APVBox" type="VBoxContainer" parent="ResourcesContainer/APPanel" unique_id=1622757884]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="APLabel" type="Label" parent="ResourcesContainer/APPanel/APVBox" unique_id=554741375]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("1_font")
-theme_override_font_sizes/font_size = 16
-text = "⚡  AP: 50"
-horizontal_alignment = 1
+text = "$0.00"
 vertical_alignment = 1
 
-[node name="APProgressBar" type="ProgressBar" parent="ResourcesContainer/APPanel/APVBox" unique_id=1167817614]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 10)
+[node name="APPanel" type="PanelContainer" parent="ResourcesContainer" unique_id=435876803]
 layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
+theme_override_styles/panel = SubResource("APPanelStyle")
+
+[node name="APVBox" type="VBoxContainer" parent="ResourcesContainer/APPanel" unique_id=1833491944]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="APRow" type="HBoxContainer" parent="ResourcesContainer/APPanel/APVBox" unique_id=724521672]
+layout_mode = 2
+theme_override_constants/separation = 7
+alignment = 1
+
+[node name="APLabel" type="Label" parent="ResourcesContainer/APPanel/APVBox/APRow" unique_id=1233618880]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 16
+text = "⚡  0"
+vertical_alignment = 1
+
+[node name="APProgressBar" type="ProgressBar" parent="ResourcesContainer/APPanel/APVBox" unique_id=2014220572]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 11)
+layout_mode = 2
+theme_override_styles/background = SubResource("BarBackground")
+theme_override_styles/fill = SubResource("BarFill")
 max_value = 600.0
 show_percentage = false

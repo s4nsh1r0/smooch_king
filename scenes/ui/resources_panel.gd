@@ -24,11 +24,12 @@ func _ready() -> void:
 
 func _on_money_changed(current_money: float) -> void:
 	if money_label:
-		money_label.text = "Money: $%.2f" % current_money
+		money_label.text = "$%.2f" % current_money
+
 
 func _on_ap_changed(current_ap: int) -> void:
 	if ap_label:
-		ap_label.text = "⚡  AP: %d" % current_ap
+		ap_label.text = "⚡  %d" % current_ap
 
 func _on_ap_progress(current: float, maximum: float) -> void:
 	if not ap_progress_bar:

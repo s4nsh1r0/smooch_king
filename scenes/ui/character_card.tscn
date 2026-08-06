@@ -1,37 +1,84 @@
-[gd_scene format=3 uid="uid://m1ivak7084x7"]
+[gd_scene format=3 uid="uid://begkqkb84w4nn"]
 
-[ext_resource type="Script" uid="uid://by5kqjl3k0yvv" path="res://scenes/ui/character_card.gd" id="1_ipwxb"]
-[ext_resource type="FontFile" uid="uid://dcdba63yvyhcy" path="res://assets/fonts/LelujaOriginal-BoldItalic.otf" id="2_mrcpf"]
+[ext_resource type="Script" uid="uid://by5kqjl3k0yvv" path="res://scenes/ui/character_card.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://dcdba63yvyhcy" path="res://assets/fonts/LelujaOriginal-BoldItalic.otf" id="2_title_font"]
+[ext_resource type="FontFile" uid="uid://dp2qg218iuweo" path="res://assets/fonts/Poppins-Regular.ttf" id="3_body_font"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_main"]
+[sub_resource type="StyleBoxFlat" id="MainTransparent"]
 bg_color = Color(1, 1, 1, 0)
 draw_center = false
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_name_bg"]
-bg_color = Color(0, 0, 0, 0.7)
+[sub_resource type="StyleBoxFlat" id="HeaderStyle"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.25, 0.13, 0.34, 0.98)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.3)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+border_color = Color(0.88, 0.58, 0.96, 0.78)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.18, 0.04, 0.27, 0.48)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_relationship_bg"]
-bg_color = Color(0, 0, 0, 0.6)
+[sub_resource type="StyleBoxFlat" id="MoodDefault"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.2, 0.2, 0.3, 0.96)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(1, 1, 1, 0.2)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+border_color = Color(0.62, 0.64, 0.76, 0.9)
+corner_radius_top_left = 13
+corner_radius_top_right = 13
+corner_radius_bottom_right = 13
+corner_radius_bottom_left = 13
 
-[node name="CharacterCard" type="PanelContainer"]
+[sub_resource type="StyleBoxFlat" id="RelationshipStyle"]
+content_margin_left = 14.0
+content_margin_top = 9.0
+content_margin_right = 14.0
+content_margin_bottom = 9.0
+bg_color = Color(0.2, 0.11, 0.28, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.76, 0.5, 0.9, 0.58)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="SpeechBubbleStyle"]
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+bg_color = Color(0.1, 0.07, 0.14, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.93, 0.72, 1, 0.92)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0.06, 0.02, 0.1, 0.72)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+
+[node name="CharacterCard" type="PanelContainer" unique_id=360680391]
 custom_minimum_size = Vector2(550, 0)
 anchors_preset = 13
 anchor_left = 0.5
@@ -41,93 +88,183 @@ offset_left = -0.5
 offset_right = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_main")
-script = ExtResource("1_ipwxb")
+theme_override_styles/panel = SubResource("MainTransparent")
+script = ExtResource("1_script")
 
-[node name="CharacterLayout" type="VBoxContainer" parent="."]
+[node name="CharacterLayout" type="VBoxContainer" parent="." unique_id=2065866961]
 layout_mode = 2
+theme_override_constants/separation = 6
 
-[node name="NameBackground" type="PanelContainer" parent="CharacterLayout"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_name_bg")
-
-[node name="CharacterNameLabel" type="Label" parent="CharacterLayout/NameBackground"]
+[node name="HeaderPanel" type="PanelContainer" parent="CharacterLayout" unique_id=261813571]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_styles/panel = SubResource("HeaderStyle")
+
+[node name="HeaderContent" type="HBoxContainer" parent="CharacterLayout/HeaderPanel" unique_id=1528501034]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Identity" type="VBoxContainer" parent="CharacterLayout/HeaderPanel/HeaderContent" unique_id=588547634]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="CharacterNameLabel" type="Label" parent="CharacterLayout/HeaderPanel/HeaderContent/Identity" unique_id=837997235]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.35, 0.1, 0.45, 0.7)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
-theme_override_fonts/font = ExtResource("2_mrcpf")
-theme_override_font_sizes/font_size = 32
-horizontal_alignment = 1
-vertical_alignment = 1
+theme_override_fonts/font = ExtResource("2_title_font")
+theme_override_font_sizes/font_size = 30
+text = "Character"
 text_overrun_behavior = 3
 
-[node name="RelationshipBackground" type="PanelContainer" parent="CharacterLayout"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_relationship_bg")
-
-[node name="RelationshipSection" type="VBoxContainer" parent="CharacterLayout/RelationshipBackground"]
-layout_mode = 2
-
-[node name="HeartContainer" type="HBoxContainer" parent="CharacterLayout/RelationshipBackground/RelationshipSection"]
+[node name="CharacterDetailsLabel" type="Label" parent="CharacterLayout/HeaderPanel/HeaderContent/Identity" unique_id=1413143789]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.75, 0.88, 1)
+theme_override_fonts/font = ExtResource("3_body_font")
+theme_override_font_sizes/font_size = 13
+text = "26  •  Barwoman"
+text_overrun_behavior = 3
+
+[node name="MoodPanel" type="PanelContainer" parent="CharacterLayout/HeaderPanel/HeaderContent" unique_id=1987134910]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("MoodDefault")
+
+[node name="MoodContent" type="HBoxContainer" parent="CharacterLayout/HeaderPanel/HeaderContent/MoodPanel" unique_id=937608586]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="MoodDot" type="ColorRect" parent="CharacterLayout/HeaderPanel/HeaderContent/MoodPanel/MoodContent" unique_id=45556817]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(9, 9)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.72, 0.75, 0.86, 1)
+
+[node name="MoodText" type="VBoxContainer" parent="CharacterLayout/HeaderPanel/HeaderContent/MoodPanel/MoodContent" unique_id=310031857]
+layout_mode = 2
+theme_override_constants/separation = -2
+
+[node name="MoodLabel" type="Label" parent="CharacterLayout/HeaderPanel/HeaderContent/MoodPanel/MoodContent/MoodText" unique_id=1758579573]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_body_font")
+theme_override_font_sizes/font_size = 12
+text = "Neutral"
+horizontal_alignment = 1
+
+[node name="MoodMultiplierLabel" type="Label" parent="CharacterLayout/HeaderPanel/HeaderContent/MoodPanel/MoodContent/MoodText" unique_id=1685697204]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.84, 0.85, 0.94, 1)
+theme_override_fonts/font = ExtResource("3_body_font")
+theme_override_font_sizes/font_size = 10
+text = "×1.0 RP"
+horizontal_alignment = 1
+
+[node name="RelationshipBackground" type="PanelContainer" parent="CharacterLayout" unique_id=724857983]
+layout_mode = 2
+theme_override_styles/panel = SubResource("RelationshipStyle")
+
+[node name="RelationshipSection" type="VBoxContainer" parent="CharacterLayout/RelationshipBackground" unique_id=175751247]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="HeartContainer" type="HBoxContainer" parent="CharacterLayout/RelationshipBackground/RelationshipSection" unique_id=765693530]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 4
 alignment = 1
 
-[node name="StageLabel" type="Label" parent="CharacterLayout/RelationshipBackground/RelationshipSection"]
+[node name="StageLabel" type="Label" parent="CharacterLayout/RelationshipBackground/RelationshipSection" unique_id=1726066225]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("3_body_font")
 theme_override_font_sizes/font_size = 14
-text = "Stranger - 0/150"
+text = "Stranger  •  0 / 50"
 horizontal_alignment = 1
 
-[node name="CharacterImage" type="TextureRect" parent="CharacterLayout"]
+[node name="PortraitFrame" type="MarginContainer" parent="CharacterLayout" unique_id=1641479567]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 525)
 layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
 
-[node name="DialoguePanel" type="PanelContainer" parent="CharacterLayout/CharacterImage"]
+[node name="CharacterImage" type="TextureRect" parent="CharacterLayout/PortraitFrame" unique_id=1673122385]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 525)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DialoguePanel" type="PanelContainer" parent="CharacterLayout/PortraitFrame/CharacterImage" unique_id=732626531]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -23.0
+offset_left = 18.0
+offset_top = -98.0
+offset_right = -18.0
+offset_bottom = -14.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_styles/panel = SubResource("SpeechBubbleStyle")
 
-[node name="DialogueLabel" type="Label" parent="CharacterLayout/CharacterImage/DialoguePanel"]
+[node name="DialogueLabel" type="Label" parent="CharacterLayout/PortraitFrame/CharacterImage/DialoguePanel" unique_id=874972785]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(300, 44)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_body_font")
+theme_override_font_sizes/font_size = 15
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="InteractionButtons" type="HBoxContainer" parent="CharacterLayout"]
+[node name="InteractionButtons" type="HBoxContainer" parent="CharacterLayout" unique_id=1846560245]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/separation = 8
 
-[node name="TalkButton" type="Button" parent="CharacterLayout/InteractionButtons"]
+[node name="TalkButton" type="Button" parent="CharacterLayout/InteractionButtons" unique_id=1476078879]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "TALK"
+theme_override_fonts/font = ExtResource("3_body_font")
+text = "💬  TALK"
 
-[node name="GiftButton" type="Button" parent="CharacterLayout/InteractionButtons"]
+[node name="GiftButton" type="Button" parent="CharacterLayout/InteractionButtons" unique_id=1656342640]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "GIFT"
+theme_override_fonts/font = ExtResource("3_body_font")
+text = "🎁  GIFT"
 
-[node name="DateButton" type="Button" parent="CharacterLayout/InteractionButtons"]
+[node name="DateButton" type="Button" parent="CharacterLayout/InteractionButtons" unique_id=1177439883]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "DATE"
+theme_override_fonts/font = ExtResource("3_body_font")
+text = "💕  DATE"

@@ -10,6 +10,13 @@ extends PanelContainer
 @onready var interaction_buttons: HBoxContainer = %InteractionButtons
 @onready var heart_container: HBoxContainer = %HeartContainer
 @onready var stage_label: Label = %StageLabel
+@onready var character_details_label: Label = %CharacterDetailsLabel
+@onready var mood_panel: PanelContainer = %MoodPanel
+@onready var mood_label: Label = %MoodLabel
+@onready var mood_multiplier_label: Label = %MoodMultiplierLabel
+@onready var mood_dot: ColorRect = %MoodDot
+@onready var portrait_frame: Control = %PortraitFrame
+@onready var header_panel: PanelContainer = %HeaderPanel
 
 signal gift_requested(character_id: String, character_data: Dictionary)
 signal date_requested(character_id: String, character_data: Dictionary)
@@ -19,6 +26,65 @@ const TALK_AP_COST: int = 1
 const TALK_RELATIONSHIP_POINTS: int = 1
 const DATE_MIN_AP: int = 5
 const MAX_RELATIONSHIP_POINTS: int = 1500
+const MOOD_VISUALS := {
+	"angry": {
+		"label": "Angry",
+		"color": Color(0.95, 0.30, 0.36, 1.0),
+		"background": Color(0.34, 0.10, 0.15, 0.96)
+	},
+	"upset": {
+		"label": "Upset",
+		"color": Color(0.95, 0.58, 0.32, 1.0),
+		"background": Color(0.34, 0.19, 0.10, 0.96)
+	},
+	"neutral": {
+		"label": "Neutral",
+		"color": Color(0.72, 0.75, 0.86, 1.0),
+		"background": Color(0.20, 0.20, 0.30, 0.96)
+	},
+	"happy": {
+		"label": "Happy",
+		"color": Color(0.42, 0.94, 0.66, 1.0),
+		"background": Color(0.10, 0.31, 0.22, 0.96)
+	},
+	"excited": {
+		"label": "Excited",
+		"color": Color(1.00, 0.76, 0.32, 1.0),
+		"background": Color(0.36, 0.25, 0.08, 0.96)
+	}
+}
+
+const STAGE_HEADER_COLORS := {
+	"Stranger": {
+		"background": Color(0.25, 0.13, 0.34, 0.98),
+		"border": Color(0.88, 0.58, 0.96, 0.78)
+	},
+	"Acquaintance": {
+		"background": Color(0.22, 0.16, 0.36, 0.98),
+		"border": Color(0.68, 0.60, 1.00, 0.82)
+	},
+	"Friend": {
+		"background": Color(0.15, 0.23, 0.34, 0.98),
+		"border": Color(0.48, 0.82, 1.00, 0.82)
+	},
+	"Good Friend": {
+		"background": Color(0.14, 0.28, 0.27, 0.98),
+		"border": Color(0.45, 0.95, 0.75, 0.84)
+	},
+	"Crush": {
+		"background": Color(0.34, 0.14, 0.30, 0.98),
+		"border": Color(1.00, 0.52, 0.82, 0.88)
+	},
+	"Dating": {
+		"background": Color(0.38, 0.13, 0.22, 0.98),
+		"border": Color(1.00, 0.48, 0.60, 0.92)
+	},
+	"Soulmate": {
+		"background": Color(0.34, 0.24, 0.08, 0.99),
+		"border": Color(1.00, 0.82, 0.36, 0.96)
+	}
+}
+
 
 # Must match PlayerData.RELATIONSHIP_STAGES thresholds
 var relationship_stages: Array = [
@@ -39,7 +105,9 @@ var _last_filled_hearts: int = -1
 func _ready() -> void:
 	for node in [
 		character_name_label, character_image, dialogue_panel, dialogue_label,
-		talk_button, gift_button, date_button, interaction_buttons, heart_container, stage_label
+		talk_button, gift_button, date_button, interaction_buttons, heart_container, stage_label,
+		character_details_label, mood_panel, mood_label, mood_multiplier_label, mood_dot,
+		portrait_frame, header_panel
 	]:
 		if not is_instance_valid(node):
 			push_error("CharacterCard: required node missing")
@@ -70,6 +138,8 @@ func _ready() -> void:
 			PlayerData.player_relationship_stage_changed.connect(_on_player_relationship_stage_changed)
 		if not PlayerData.player_ap_changed.is_connected(_on_player_ap_changed):
 			PlayerData.player_ap_changed.connect(_on_player_ap_changed)
+	if CharacterMoodManager and not CharacterMoodManager.mood_changed.is_connected(_on_character_mood_changed):
+		CharacterMoodManager.mood_changed.connect(_on_character_mood_changed)
 	else:
 		push_error("CharacterCard: PlayerData not found")
 
@@ -86,6 +156,8 @@ func _exit_tree() -> void:
 			PlayerData.player_relationship_stage_changed.disconnect(_on_player_relationship_stage_changed)
 		if PlayerData.player_ap_changed.is_connected(_on_player_ap_changed):
 			PlayerData.player_ap_changed.disconnect(_on_player_ap_changed)
+	if CharacterMoodManager and CharacterMoodManager.mood_changed.is_connected(_on_character_mood_changed):
+		CharacterMoodManager.mood_changed.disconnect(_on_character_mood_changed)
 
 # ---------- Styling ----------
 
@@ -128,6 +200,96 @@ func _style_name_and_relationship() -> void:
 		style.content_margin_top = 8
 		style.content_margin_bottom = 8
 		rel_bg.add_theme_stylebox_override("panel", style)
+
+func _update_header_style(stage_name: String) -> void:
+	var palette: Dictionary = STAGE_HEADER_COLORS.get(
+		stage_name,
+		STAGE_HEADER_COLORS["Stranger"]
+	)
+
+	var style := StyleBoxFlat.new()
+	style.bg_color = palette.get(
+		"background",
+		Color(0.25, 0.13, 0.34, 0.98)
+	)
+	style.border_color = palette.get(
+		"border",
+		Color(0.88, 0.58, 0.96, 0.78)
+	)
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(18)
+	style.content_margin_left = 16
+	style.content_margin_right = 16
+	style.content_margin_top = 10
+	style.content_margin_bottom = 10
+	style.shadow_color = style.border_color.darkened(0.65)
+	style.shadow_size = 8
+	style.shadow_offset = Vector2(0, 3)
+
+	header_panel.add_theme_stylebox_override("panel", style)
+
+
+func _update_profile_details() -> void:
+	if character_data.is_empty():
+		character_details_label.text = ""
+		return
+
+	var age := str(character_data.get("age", "—"))
+	var profession := str(character_data.get("profession", "Unknown profession"))
+	character_details_label.text = "%s  •  %s" % [age, profession]
+
+
+func _update_mood_display() -> void:
+	if character_id.is_empty() or not CharacterMoodManager:
+		_apply_mood_visuals("neutral", 1.0)
+		return
+
+	var mood_name := CharacterMoodManager.get_mood(character_id)
+	var multiplier := CharacterMoodManager.get_mood_multiplier(character_id)
+	_apply_mood_visuals(mood_name, multiplier)
+
+
+func _apply_mood_visuals(mood_name: String, multiplier: float) -> void:
+	var mood_key := mood_name.to_lower()
+	var visual: Dictionary = MOOD_VISUALS.get(
+		mood_key,
+		MOOD_VISUALS["neutral"]
+	)
+	var mood_color: Color = visual.get("color", Color.WHITE)
+	var mood_background: Color = visual.get(
+		"background",
+		Color(0.20, 0.20, 0.30, 0.96)
+	)
+
+	mood_dot.color = mood_color
+	mood_label.text = str(visual.get("label", "Neutral"))
+	mood_label.add_theme_color_override("font_color", mood_color)
+	mood_multiplier_label.text = "×%.1f RP" % multiplier
+	mood_multiplier_label.add_theme_color_override(
+		"font_color",
+		mood_color.lightened(0.15)
+	)
+
+	var style := StyleBoxFlat.new()
+	style.bg_color = mood_background
+	style.border_color = mood_color.darkened(0.08)
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(13)
+	style.content_margin_left = 10
+	style.content_margin_right = 10
+	style.content_margin_top = 5
+	style.content_margin_bottom = 5
+	mood_panel.add_theme_stylebox_override("panel", style)
+
+
+func _on_character_mood_changed(
+	changed_character_id: String,
+	_old_mood: String,
+	_new_mood: String
+) -> void:
+	if changed_character_id == character_id:
+		_update_mood_display()
+
 
 func _setup_dialogue_panel() -> void:
 	dialogue_panel.modulate.a = 0.0
@@ -203,8 +365,8 @@ func _setup_button_styles() -> void:
 
 func _add_close_button() -> void:
 	var close_button = Button.new()
-	close_button.text = "CLOSE"
-	close_button.custom_minimum_size = Vector2(80, 40)
+	close_button.text = "✕  CLOSE"
+	close_button.custom_minimum_size = Vector2(80, 50)
 	close_button.focus_mode = Control.FOCUS_NONE
 
 	var close_style = StyleBoxFlat.new()
@@ -246,9 +408,13 @@ func set_character_data(data: Dictionary, revealed: bool, stats_needed_text: Str
 	character_data = data
 	character_id = str(data.id)
 	character_name_label.text = str(data.get("name", "Unknown")) if revealed else "???"
+	character_details_label.text = ""
+	mood_panel.visible = revealed
 	_last_filled_hearts = -1
 
 	if revealed:
+		_update_profile_details()
+		_update_mood_display()
 		var image_path = str(data.get("image_path", ""))
 		if image_path and ResourceLoader.exists(image_path):
 			character_image.texture = load(image_path)
@@ -283,7 +449,7 @@ func create_heart_meter() -> void:
 		heart.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
 		heart_container.add_child(heart)
 
-func get_current_stage(points: int) -> Dictionary:
+func get_current_stage(points: float) -> Dictionary:
 	for stage in relationship_stages:
 		if points >= stage.min and points <= stage.max:
 			return stage
@@ -316,15 +482,22 @@ func update_relationship_display() -> void:
 			heart.modulate = Color(0.3, 0.25, 0.35, 0.5)
 	_last_filled_hearts = filled_hearts
 
-	var stage_name = current_stage.name
-	stage_label.text = "%s - %d/%d" % [stage_name, stage_progress, stage_range]
-	stage_label.add_theme_color_override("font_color", current_stage.color.lerp(Color.WHITE, 0.35))
-	heart_container.tooltip_text = "%s (%d/%d in stage) - Total: %d/%d points" % [
-		stage_name, stage_progress, stage_range, points, MAX_RELATIONSHIP_POINTS
+	var stage_name = str(current_stage.name)
+	_update_header_style(stage_name)
+
+	stage_label.text = "%s  •  %.1f / %d" % [
+		stage_name,
+		stage_progress,
+		stage_range
 	]
+	stage_label.add_theme_color_override("font_color", current_stage.color.lerp(Color.WHITE, 0.35))
+	heart_container.tooltip_text = ("%s (%.1f/%d in stage) • Total: %.1f/%d points"
+		% [stage_name, stage_progress, stage_range, points, MAX_RELATIONSHIP_POINTS])
 
 	# Use PlayerData stage string so unlocks stay consistent
 	var pd_stage = PlayerData.get_relationship_stage(character_id)
+	_update_header_style(pd_stage)
+
 	gift_button.disabled = not (pd_stage in ["Good Friend", "Crush", "Dating", "Soulmate"])
 	gift_button.tooltip_text = "Give a gift" if not gift_button.disabled else "Requires Good Friend status"
 
@@ -373,25 +546,44 @@ func show_dialogue() -> bool:
 		_animate_dialogue_panel(true)
 		return false
 
-	var current_stage = PlayerData.get_relationship_stage(character_id)
-	var dialogues = _get_dialogues_for_stage(current_stage)
-	if dialogues.is_empty():
-		dialogues = ["Hello there!", "Nice to see you!", "How's it going?"]
+	var current_stage := PlayerData.get_relationship_stage(character_id)
+	var dialogues := _get_dialogues_for_stage(current_stage)
 
-	var old_points = PlayerData.get_relationship_points(character_id)
+	if dialogues.is_empty():
+		dialogues = [
+			"Hello there!",
+			"Nice to see you!",
+			"How's it going?"
+		]
+
+	var old_points := PlayerData.get_relationship_points(character_id)
+
 	PlayerData.consume_ap(TALK_AP_COST)
-	# Always 1 point — ignore per-character dialogue_points overrides for balance
-	PlayerData.add_relationship_points(character_id, TALK_RELATIONSHIP_POINTS)
+
+	var gained_points := PlayerData.add_talk_relationship_points(
+		character_id,
+		TALK_RELATIONSHIP_POINTS
+	)
 
 	dialogue_label.text = dialogues[randi() % dialogues.size()]
-	dialogue_label.add_theme_color_override("font_color", Color(1.0, 0.92, 0.98, 1.0))
+	dialogue_label.add_theme_color_override(
+		"font_color",
+		Color(1.0, 0.92, 0.98, 1.0)
+	)
 
-	var new_points = PlayerData.get_relationship_points(character_id)
-	var stage_changed = _check_for_stage_completion(old_points, new_points)
+	var new_points := PlayerData.get_relationship_points(character_id)
+	var stage_changed := _check_for_stage_completion(
+		old_points,
+		new_points
+	)
+
 	update_relationship_display()
+
+	_show_mood_reward_notification(gained_points)
 
 	_update_dialogue_panel_size()
 	_animate_dialogue_panel(true)
+
 	return stage_changed
 
 func _get_dialogues_for_stage(stage: String) -> Array:
@@ -415,7 +607,7 @@ func _get_dialogues_for_stage(stage: String) -> Array:
 
 	return []
 
-func _check_for_stage_completion(old_points: int, new_points: int) -> bool:
+func _check_for_stage_completion(old_points: float, new_points: float) -> bool:
 	var old_stage = get_current_stage(old_points)
 	var new_stage = get_current_stage(new_points)
 	if old_stage.name == new_stage.name:
@@ -509,6 +701,40 @@ func _animate_dialogue_panel(should_show: bool) -> void:
 
 func hide_dialogue() -> void:
 	_animate_dialogue_panel(false)
+func _show_mood_reward_notification(gained_points: float) -> void:
+	if not UIManager:
+		return
+
+	var character_name := str(
+		character_data.get("name", "Character")
+	)
+	var mood_name := "Neutral"
+	var multiplier := 1.0
+
+	if CharacterMoodManager:
+		mood_name = CharacterMoodManager.get_mood_display_name(
+			character_id
+		)
+		multiplier = CharacterMoodManager.get_mood_multiplier(
+			character_id
+		)
+
+	if gained_points <= 0.0:
+		UIManager.show_notification(
+			"%s is %s. Relationship did not increase."
+			% [character_name, mood_name.to_lower()]
+		)
+		return
+
+	UIManager.show_notification(
+		"%s is %s • Relationship +%.1f (×%.1f)"
+		% [
+			character_name,
+			mood_name,
+			gained_points,
+			multiplier
+		]
+	)
 
 # ---------- Buttons ----------
 

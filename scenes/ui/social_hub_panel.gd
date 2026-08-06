@@ -30,6 +30,8 @@ func _ready() -> void:
 		LocationManager.location_data_updated.connect(_on_player_location_changed)
 	if PlayerData and not PlayerData.player_stat_changed.is_connected(_on_player_stat_changed):
 		PlayerData.player_stat_changed.connect(_on_player_stat_changed)
+	if CharacterMoodManager and not CharacterMoodManager.mood_changed.is_connected(_on_character_mood_changed):
+		CharacterMoodManager.mood_changed.connect(_on_character_mood_changed)
 
 	tree_exiting.connect(_cleanup_on_exit)
 
@@ -90,6 +92,9 @@ func get_fade_tween() -> Tween:
 func update_character_list() -> void:
 	_clear_character_list_content()
 
+	if CharacterMoodManager:
+		CharacterMoodManager.refresh_all_moods()
+
 	if not PlayerData or not LocationManager:
 		if title_label:
 			title_label.text = "Error: Missing Data"
@@ -132,14 +137,23 @@ func update_character_list() -> void:
 func _update_character_item_display(character_item: Node, character_data: Dictionary) -> void:
 	var requirements_met := true
 	var stats_required = character_data.get("stats_required", {})
+
 	if stats_required is Dictionary:
 		for stat_name in stats_required:
 			if PlayerData.get_stat(str(stat_name)) < float(stats_required[stat_name]):
 				requirements_met = false
 				break
 
+	var display_data := character_data.duplicate(true)
+	var character_id := str(display_data.get("id", ""))
+
+	if CharacterMoodManager and not character_id.is_empty():
+		CharacterMoodManager.register_character(display_data)
+		display_data["mood"] = CharacterMoodManager.get_mood(character_id)
+		display_data["mood_multiplier"] = CharacterMoodManager.get_mood_multiplier(character_id)
+
 	if character_item.has_method("set_character_data"):
-		character_item.set_character_data(character_data, requirements_met)
+		character_item.set_character_data(display_data, requirements_met)
 
 func _clear_character_list_content() -> void:
 	if not is_instance_valid(character_list_container):
@@ -157,6 +171,35 @@ func _on_player_stat_changed(_stat_name: String, _new_value: float) -> void:
 	for child in character_list_container.get_children():
 		if child.has_method("set_character_data") and "character_data" in child:
 			_update_character_item_display(child, child.character_data)
+
+
+func _on_character_mood_changed(
+	character_id: String,
+	_old_mood: String,
+	new_mood: String
+) -> void:
+	if not visible or not is_instance_valid(character_list_container):
+		return
+
+	for child in character_list_container.get_children():
+		if not "character_data" in child:
+			continue
+
+		var item_data = child.character_data
+		if not item_data is Dictionary:
+			continue
+
+		if str(item_data.get("id", "")) != character_id:
+			continue
+
+		if child.has_method("set_mood"):
+			child.set_mood(new_mood)
+
+		child.character_data["mood"] = new_mood
+		child.character_data["mood_multiplier"] = (
+			CharacterMoodManager.get_mood_multiplier(character_id)
+		)
+		return
 
 func _on_character_list_item_selected(character_data: Dictionary) -> void:
 	request_character_card_details.emit(character_data)
@@ -227,3 +270,5 @@ func _cleanup_on_exit() -> void:
 		LocationManager.location_data_updated.disconnect(_on_player_location_changed)
 	if PlayerData and PlayerData.player_stat_changed.is_connected(_on_player_stat_changed):
 		PlayerData.player_stat_changed.disconnect(_on_player_stat_changed)
+	if CharacterMoodManager and CharacterMoodManager.mood_changed.is_connected(_on_character_mood_changed):
+		CharacterMoodManager.mood_changed.disconnect(_on_character_mood_changed)

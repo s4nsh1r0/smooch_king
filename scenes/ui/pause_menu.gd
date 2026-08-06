@@ -61,6 +61,7 @@ func _ready():
 
 func show_menu() -> void:
 	if is_instance_valid(panel_container) and not panel_container.visible:
+		SoundManager.play_panel_open()
 		panel_container.visible = true
 		if is_instance_valid(backdrop):
 			backdrop.visible = true
@@ -70,6 +71,7 @@ func show_menu() -> void:
 
 func hide_menu() -> void:
 	if is_instance_valid(panel_container) and panel_container.visible:
+		SoundManager.play_panel_close()
 		panel_container.visible = false
 		if is_instance_valid(backdrop):
 			backdrop.visible = false
@@ -156,7 +158,7 @@ func _on_main_menu_confirmed():
 	
 	# Stop any active activity without saving
 	if PlayerData and PlayerData.is_activity_active:
-		PlayerData.stop_activity(false)  # false = not due to stamina exhaustion
+		PlayerData.stop_activity(false)
 	
 	# Change to main menu scene
 	var main_menu_path = "res://scenes/main/start_scene.tscn"

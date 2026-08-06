@@ -1,8 +1,7 @@
-[gd_scene format=3 uid="uid://bs04qe5k0fcgq"]
+[gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://caw88gt446nsb" path="res://scenes/ui/stats_panel.gd" id="1_oob38"]
-[ext_resource type="FontFile" uid="uid://dcdba63yvyhcy" path="res://assets/fonts/LelujaOriginal-BoldItalic.otf" id="3_nkcmh"]
-[ext_resource type="FontFile" uid="uid://6elxvpe41nfh" path="res://assets/fonts/NotoColorEmoji-Regular.ttf" id="3_shpxu"]
+[ext_resource type="Script" path="res://scenes/ui/stats_panel.gd" id="1_script"]
+[ext_resource type="FontFile" path="res://assets/fonts/LelujaOriginal-BoldItalic.otf" id="2_title_font"]
 
 [node name="StatsPanel" type="PanelContainer"]
 custom_minimum_size = Vector2(550, 0)
@@ -14,79 +13,93 @@ offset_right = 601.0
 offset_bottom = -150.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("1_oob38")
+script = ExtResource("1_script")
 
-[node name="MainLayout" type="VBoxContainer" parent="."]
+[node name="OuterMargin" type="MarginContainer" parent="."]
 layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
 
-[node name="PlayerNameLabel" type="Label" parent="MainLayout"]
+[node name="MainLayout" type="VBoxContainer" parent="OuterMargin"]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="PlayerNameLabel" type="Label" parent="OuterMargin/MainLayout"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 0
-theme_override_colors/font_color = Color(0.9, 1, 0.95, 1)
-theme_override_fonts/font = ExtResource("3_nkcmh")
-theme_override_font_sizes/font_size = 32
+custom_minimum_size = Vector2(0, 38)
+theme_override_colors/font_color = Color(0.95, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("2_title_font")
+theme_override_font_sizes/font_size = 28
 text = "Player"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSeparator1" type="HSeparator" parent="MainLayout"]
+[node name="HeaderSeparator" type="HSeparator" parent="OuterMargin/MainLayout"]
 layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="LabelPhysical" type="Label" parent="MainLayout"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_colors/font_color = Color(1, 0.6, 0.6, 1)
-theme_override_fonts/font = ExtResource("3_shpxu")
-theme_override_font_sizes/font_size = 20
-text = "💪 Physical"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="PhysicalSeparator" type="HSeparator" parent="MainLayout"]
-layout_mode = 2
-
-[node name="PhysicalStats" type="VBoxContainer" parent="MainLayout"]
+[node name="StatsScroll" type="ScrollContainer" parent="OuterMargin/MainLayout"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 8
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
 
-[node name="LabelMental" type="Label" parent="MainLayout"]
+[node name="StatsContent" type="VBoxContainer" parent="OuterMargin/MainLayout/StatsScroll"]
 layout_mode = 2
-size_flags_vertical = 1
-theme_override_colors/font_color = Color(0.6, 0.8, 1, 1)
-theme_override_fonts/font = ExtResource("3_shpxu")
-theme_override_font_sizes/font_size = 20
-text = "🧠 Mental"
+size_flags_horizontal = 3
+theme_override_constants/separation = 7
+
+[node name="LabelPhysical" type="Label" parent="OuterMargin/MainLayout/StatsScroll/StatsContent"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 26)
+theme_override_colors/font_color = Color(1, 0.55, 0.65, 1)
+theme_override_font_sizes/font_size = 17
+text = "PHYSICAL"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MentalSeparator" type="HSeparator" parent="MainLayout"]
-layout_mode = 2
-
-[node name="MentalStats" type="VBoxContainer" parent="MainLayout"]
+[node name="PhysicalStats" type="GridContainer" parent="OuterMargin/MainLayout/StatsScroll/StatsContent"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 8
+size_flags_horizontal = 3
+columns = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
 
-[node name="LabelSocial" type="Label" parent="MainLayout"]
+[node name="LabelMental" type="Label" parent="OuterMargin/MainLayout/StatsScroll/StatsContent"]
 layout_mode = 2
-size_flags_vertical = 1
-theme_override_colors/font_color = Color(0.6, 1, 0.7, 1)
-theme_override_fonts/font = ExtResource("3_shpxu")
-theme_override_font_sizes/font_size = 20
-text = "👥 Social"
+custom_minimum_size = Vector2(0, 26)
+theme_override_colors/font_color = Color(0.72, 0.62, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "MENTAL"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SocialSeparator" type="HSeparator" parent="MainLayout"]
-layout_mode = 2
-
-[node name="SocialStats" type="VBoxContainer" parent="MainLayout"]
+[node name="MentalStats" type="GridContainer" parent="OuterMargin/MainLayout/StatsScroll/StatsContent"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 8
+size_flags_horizontal = 3
+columns = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+
+[node name="LabelSocial" type="Label" parent="OuterMargin/MainLayout/StatsScroll/StatsContent"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 26)
+theme_override_colors/font_color = Color(0.95, 0.62, 0.86, 1)
+theme_override_font_sizes/font_size = 17
+text = "SOCIAL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SocialStats" type="GridContainer" parent="OuterMargin/MainLayout/StatsScroll/StatsContent"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8

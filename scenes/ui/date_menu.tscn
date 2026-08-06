@@ -72,8 +72,120 @@ corner_radius_bottom_left = 8
 bg_color = Color(0.6, 0.6, 0.6, 0)
 draw_center = false
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_photo_frame"]
+bg_color = Color(0.08, 0.04, 0.07, 0.98)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.95, 0.4, 0.6, 0.9)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.6, 0.15, 0.35, 0.55)
+shadow_size = 28
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_inner_vignette"]
+bg_color = Color(0, 0, 0, 0)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0.35)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_title_chip"]
+content_margin_left = 14.0
+content_margin_top = 6.0
+content_margin_right = 14.0
+content_margin_bottom = 6.0
+bg_color = Color(0.08, 0.04, 0.07, 0.82)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.95, 0.4, 0.6, 0.55)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
+bg_color = Color(0.15, 0.08, 0.13, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.95, 0.4, 0.6, 0.4)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_fill"]
+bg_color = Color(0.95, 0.35, 0.55, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_popup_close"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+bg_color = Color(0.5, 0.22, 0.38, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.95, 0.6, 0.7, 0.6)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_popup_close_pressed"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+bg_color = Color(0.4, 0.16, 0.3, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.85, 0.55, 0.65, 0.7)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_popup_close_hover"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+bg_color = Color(0.65, 0.3, 0.48, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.7, 0.8, 0.8)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
 [node name="DateMenu" type="PanelContainer" unique_id=280239976]
 modulate = Color(1, 1, 1, 0)
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -270,7 +382,7 @@ text = "Home"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="KissButton" type="Button" parent="MainContainer/ButtonContainer" unique_id=1839617280]
+[node name="SpecialButton" type="Button" parent="MainContainer/ButtonContainer" unique_id=1839617280]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 60)
 layout_mode = 2
@@ -284,7 +396,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/ButtonContainer/KissButton" unique_id=1622950384]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/ButtonContainer/SpecialButton" unique_id=1622950384]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -294,7 +406,7 @@ grow_vertical = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="EmojiLabel" type="Label" parent="MainContainer/ButtonContainer/KissButton/HBoxContainer" unique_id=15623756]
+[node name="EmojiLabel" type="Label" parent="MainContainer/ButtonContainer/SpecialButton/HBoxContainer" unique_id=15623756]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_emoji")
 theme_override_font_sizes/font_size = 22
@@ -302,7 +414,7 @@ text = "💋"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextLabel" type="Label" parent="MainContainer/ButtonContainer/KissButton/HBoxContainer" unique_id=897095175]
+[node name="TextLabel" type="Label" parent="MainContainer/ButtonContainer/SpecialButton/HBoxContainer" unique_id=897095175]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_ow7na")
 theme_override_font_sizes/font_size = 22
@@ -366,7 +478,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.6862745)
+color = Color(0, 0, 0, 0.78)
 
 [node name="CinemaFrame" type="PanelContainer" parent="DatePopup" unique_id=593070591]
 unique_name_in_owner = true
@@ -376,24 +488,37 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -780.0
-offset_top = -360.0
-offset_right = 780.0
-offset_bottom = 360.0
+offset_left = -672.0
+offset_top = -424.0
+offset_right = 672.0
+offset_bottom = 424.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_wdnfl")
 
 [node name="PopupContent" type="VBoxContainer" parent="DatePopup/CinemaFrame" unique_id=1043556555]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 16
+alignment = 1
 
-[node name="ImageContainer" type="Control" parent="DatePopup/CinemaFrame/PopupContent" unique_id=2017777417]
-custom_minimum_size = Vector2(1540, 620)
+[node name="PhotoFrame" type="PanelContainer" parent="DatePopup/CinemaFrame/PopupContent" unique_id=-1273790295]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_photo_frame")
 
-[node name="BorderPanel" type="Panel" parent="DatePopup/CinemaFrame/PopupContent/ImageContainer" unique_id=121222459]
+[node name="FrameMargin" type="MarginContainer" parent="DatePopup/CinemaFrame/PopupContent/PhotoFrame" unique_id=-1273790294]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="ImageContainer" type="Control" parent="DatePopup/CinemaFrame/PopupContent/PhotoFrame/FrameMargin" unique_id=2017777417]
+custom_minimum_size = Vector2(1280, 720)
+clip_contents = true
+layout_mode = 2
+
+[node name="BorderPanel" type="Panel" parent="DatePopup/CinemaFrame/PopupContent/PhotoFrame/FrameMargin/ImageContainer" unique_id=121222459]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -402,8 +527,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_inner_vignette")
 
-[node name="DateImage" type="TextureRect" parent="DatePopup/CinemaFrame/PopupContent/ImageContainer" unique_id=1941971555]
+[node name="DateImage" type="TextureRect" parent="DatePopup/CinemaFrame/PopupContent/PhotoFrame/FrameMargin/ImageContainer" unique_id=1941971555]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -411,30 +537,41 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-expand_mode = 3
+expand_mode = 1
 stretch_mode = 6
 
-[node name="DateTitle" type="Label" parent="DatePopup/CinemaFrame/PopupContent/ImageContainer" unique_id=726605790]
-unique_name_in_owner = true
-layout_mode = 0
-anchor_left = 1.0
+[node name="TitleRow" type="MarginContainer" parent="DatePopup/CinemaFrame/PopupContent/PhotoFrame/FrameMargin/ImageContainer" unique_id=726605792]
+layout_mode = 1
+anchors_preset = 10
 anchor_right = 1.0
-offset_left = -320.0
 offset_top = 16.0
-offset_right = -20.0
-offset_bottom = 60.0
+offset_bottom = 58.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+
+[node name="DateTitleFrame" type="PanelContainer" parent="DatePopup/CinemaFrame/PopupContent/PhotoFrame/FrameMargin/ImageContainer/TitleRow" unique_id=726605791]
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_title_chip")
+
+[node name="DateTitle" type="Label" parent="DatePopup/CinemaFrame/PopupContent/PhotoFrame/FrameMargin/ImageContainer/TitleRow/DateTitleFrame" unique_id=726605790]
+unique_name_in_owner = true
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
-theme_override_constants/shadow_offset_x = 3
-theme_override_constants/shadow_offset_y = 3
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("2_x1b2k")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 28
 text = "Date Title"
 horizontal_alignment = 2
 
 [node name="ButtonContainer" type="HBoxContainer" parent="DatePopup/CinemaFrame/PopupContent" unique_id=338747783]
-self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_constants/separation = 20
 alignment = 1
 
@@ -442,12 +579,20 @@ alignment = 1
 unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 32)
 layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_progress_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_progress_fill")
 show_percentage = false
 
 [node name="PopupCloseButton" type="Button" parent="DatePopup/CinemaFrame/PopupContent/ButtonContainer" unique_id=937689009]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 48)
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.97, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.85, 0.9, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_emoji")
 theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_popup_close")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_popup_close_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_popup_close_hover")
 text = "❌ Close"

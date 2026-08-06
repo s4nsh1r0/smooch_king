@@ -8,12 +8,26 @@ func get_characters() -> Dictionary:
 			"location": "Gym",
 			"image_path": "res://assets/images/characters/gym/gigi/gigi_main.png",
 			"stats_required": {"strength": 1, "endurance": 1},
+			
+					# Love Book profile
+			"age": "23",
+			"height": "166 cm",
+			"weight": "54 kg",
+			"hair": "Black with soft curls, shoulder-length",
+			"eyes": "Dark brown",
+			"body": "Slim with athletic tone",
+			"skin": "Light Brown",
+			"bust": "C",
+			"personality": "Calm",
+			"profession": "Yoga Instructor",
+			"hobby": "Sunrise Yoga",
+			
 			"date_images": {
-				"dinner": "res://assets/images/characters/gym/gigi/gigi_dinner.png",
-				"park": "res://assets/images/characters/gym/gigi/gigi_park.png",
-				"beach": "res://assets/images/characters/gym/gigi/gigi_beach.png",
-				"home": "res://assets/images/characters/gym/gigi/gigi_home.png",
-				"kiss": "res://assets/images/characters/gym/gigi/gigi_kiss.png"
+				"dinner": "res://assets/images/characters/gym/gigi/gigi_dinner.jpg",
+				"park": "res://assets/images/characters/gym/gigi/gigi_park.jpg",
+				"beach": "res://assets/images/characters/gym/gigi/gigi_beach.jpg",
+				"home": "res://assets/images/characters/gym/gigi/gigi_home.jpg",
+				"special": "res://assets/images/characters/gym/gigi/gigi_special.jpg"
 			},
 			"dialogue_by_stage": {
 				"Stranger": ["Spot me?", "First time here? Don't be shy!", "That form needs work... but we all start somewhere.", "Safety first - always warm up before lifting!"],
@@ -31,12 +45,26 @@ func get_characters() -> Dictionary:
 			"location": "Gym",
 			"image_path": "res://assets/images/characters/gym/sasha/sasha_main.png",
 			"stats_required": {"strength": 1, "endurance": 1},
+			
+			# Love Book profile
+			"age": "21",
+			"height": "174 cm",
+			"weight": "59 kg",
+			"hair": "Black, long box braids with a few gold beads",
+			"eyes": "Dark brown",
+			"body": "Fit, athletic, and toned",
+			"skin": "Dark brown",
+			"bust": "D",
+			"personality": "Energetic",
+			"profession": "Personal Trainer",
+			"hobby": "Beach Volleyball",
+			
 			"date_images": {
-				"dinner": "res://assets/images/characters/gym/sasha/sasha_dinner.png",
-				"park": "res://assets/images/characters/gym/sasha/sasha_park.png",
-				"beach": "res://assets/images/characters/gym/sasha/sasha_beach.png",
-				"home": "res://assets/images/characters/gym/sasha/sasha_home.png",
-				"kiss": "res://assets/images/characters/gym/sasha/sasha_kiss.png"
+				"dinner": "res://assets/images/characters/gym/sasha/sasha_dinner.jpg",
+				"park": "res://assets/images/characters/gym/sasha/sasha_park.jpg",
+				"beach": "res://assets/images/characters/gym/sasha/sasha_beach.jpg",
+				"home": "res://assets/images/characters/gym/sasha/sasha_home.jpg",
+				"special": "res://assets/images/characters/gym/sasha/sasha_special.jpg"
 			},
 			"dialogue_by_stage": { }  # Fill later if needed
 		},
@@ -46,12 +74,26 @@ func get_characters() -> Dictionary:
 			"location": "Gym",
 			"image_path": "res://assets/images/characters/gym/emma/emma_main.png",
 			"stats_required": {"strength": 1, "endurance": 1},
+			
+			# Love Book profile
+			"age": "20",
+			"height": "169 cm",
+			"weight": "55 kg",
+			"hair": "Dark purple, long and straight with soft bangs",
+			"eyes": "Violet",
+			"body": "Fit and lean",
+			"skin": "Fair",
+			"bust": "C",
+			"personality": "Competitive",
+			"profession": "Nutritionist",
+			"hobby": "Swimming",
+			
 			"date_images": {
-				"dinner": "res://assets/images/characters/gym/emma/emma_dinner.png",
-				"park": "res://assets/images/characters/gym/emma/emma_park.png",
-				"beach": "res://assets/images/characters/gym/emma/emma_beach.png",
-				"home": "res://assets/images/characters/gym/emma/emma_home.png",
-				"kiss": "res://assets/images/characters/gym/emma/emma_kiss.png"
+				"dinner": "res://assets/images/characters/gym/emma/emma_dinner.jpg",
+				"park": "res://assets/images/characters/gym/emma/emma_park.jpg",
+				"beach": "res://assets/images/characters/gym/emma/emma_beach.jpg",
+				"home": "res://assets/images/characters/gym/emma/emma_home.jpg",
+				"special": "res://assets/images/characters/gym/emma/emma_special.jpg"
 			},
 			"dialogue_by_stage": { }
 		},
@@ -66,7 +108,7 @@ func get_characters() -> Dictionary:
 				"park": "res://assets/images/characters/gym/naomi/naomi_park.jpeg",
 				"beach": "res://assets/images/characters/gym/naomi/naomi_beach.jpeg",
 				"home": "res://assets/images/characters/gym/naomi/naomi_home.jpeg",
-				"kiss": "res://assets/images/characters/gym/naomi/naomi_kiss.jpeg"
+				"special": "res://assets/images/characters/gym/naomi/naomi_special.jpeg"
 			},
 			"dialogue_by_stage": { }
 		}

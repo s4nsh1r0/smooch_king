@@ -15,18 +15,25 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Smooch King"
+config/description="Idle Dating Simulator"
 run/main_scene="uid://crsn817k5h0wp"
 config/features=PackedStringArray("4.7", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://icon.png"
+
+[audio]
+
+buses/default_bus_layout="uid://c5s7hsjxq2m63"
 
 [autoload]
 
 PlayerData="*res://core/systems/player_data.gd"
+SoundManager="*uid://dsykuldvhw2sy"
 LocationManager="*res://core/systems/location_manager.gd"
 GameManager="*res://core/systems/game_manager.gd"
 UIManager="*res://core/systems/ui_manager.gd"
 SaveManager="*res://core/systems/save_manager.gd"
 CharacterDatabase="*res://core/data/character_database.gd"
+CharacterMoodManager="*uid://cdbcmuh50bdu3"
 
 [display]
 

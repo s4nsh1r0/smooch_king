@@ -476,10 +476,11 @@ func _clear_task_overlay() -> void:
 	_task_progress = null
 
 func _format_time(seconds: float) -> String:
-	var s = int(ceil(seconds))
-	var m = s / 60
-	var r = s % 60
-	return "%d:%02d" % [m, r]
+	var s := int(ceil(seconds))
+	var m := s / 60.0
+	var r := s % 60
+
+	return "%d:%02d" % [int(m), r]
 
 func _clear_special_tasks() -> void:
 	_special_task_button_map.clear()

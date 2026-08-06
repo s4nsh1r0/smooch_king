@@ -13,26 +13,36 @@ extends PanelContainer
 
 const SHOP_SCENE = preload("res://scenes/ui/shop.tscn")
 const SPECIAL_TASKS_SCENE_PATH: String = "res://scenes/ui/special_tasks.tscn"
-
 const PIN_GUESS_SCENE = preload("res://scenes/minigames/pin_guess.tscn")
-var pin_guess_button: Button = null
-var current_pin_guess: Node = null
-
 const WORD_GUESS_SCENE = preload("res://scenes/minigames/word_guess.tscn")
-var word_guess_button: Button = null
-var current_word_guess: Node = null
+
+const JOB_TIER_LOOKUP: Dictionary = {
+	"job_cafe_server": 1, "job_shop_assistant": 1, "job_office_clerk": 1,
+	"job_barista": 2, "job_cafe_shift_lead": 2, "job_sales_associate": 2, "job_stock_coordinator": 2, "job_junior_analyst": 2, "job_admin_assistant": 2,
+	"job_restaurant_supervisor": 3, "job_bartender": 3, "job_store_supervisor": 3, "job_merchandiser": 3, "job_data_analyst": 3, "job_hr_coordinator": 3,
+	"job_restaurant_manager": 4, "job_bar_manager": 4, "job_store_manager": 4, "job_regional_buyer": 4, "job_senior_analyst": 4, "job_team_lead": 4,
+	"job_hospitality_director": 5, "job_retail_ops_director": 5, "job_ops_manager": 5
+}
 
 @export var fade_duration: float = 0.15
 @export var emoji_font: Font = preload("res://assets/fonts/NotoSans-Regular.ttf")
 
 var current_fade_tween: Tween = null
-var active_button_tweens: Dictionary = {}
+var button_hover_tweens: Dictionary = {}
+var button_pulse_tweens: Dictionary = {}
 var _tier_vbox_map: Dictionary = {}
 var _activity_button_map: Dictionary = {}
+
 var custom_tooltip: PanelContainer = null
+var _tooltip_layer: CanvasLayer = null
+
 var _shift_picker_layer: CanvasLayer = null
 var shop_button: Button = null
 var current_shop: Node = null
+var current_pin_guess: Node = null
+var current_word_guess: Node = null
+var pin_guess_button: Button = null
+var word_guess_button: Button = null
 var special_tasks_panel: PanelContainer = null
 
 func _ready() -> void:
@@ -46,6 +56,7 @@ func _ready() -> void:
 	if is_instance_valid(normal_activities_scroll):
 		normal_activities_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		normal_activities_scroll.size_flags_stretch_ratio = 1.0
+		normal_activities_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 
 	if is_instance_valid(job_tiers_tab_container):
 		job_tiers_tab_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -59,6 +70,10 @@ func _ready() -> void:
 			tier_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			tier_vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
 			tier_vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+			var parent_scroll = tier_vbox.get_parent()
+			if parent_scroll is ScrollContainer:
+				parent_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+				parent_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 
 	_tier_vbox_map = {
 		1: tier1_jobs_vbox,
@@ -68,6 +83,20 @@ func _ready() -> void:
 		5: tier5_jobs_vbox,
 	}
 
+	_connect_global_signals()
+
+	if is_instance_valid(special_tasks_button):
+		_add_special_tasks_bottom_spacing()
+		if not special_tasks_button.pressed.is_connected(_on_special_tasks_button_pressed):
+			special_tasks_button.pressed.connect(_on_special_tasks_button_pressed)
+
+func _exit_tree() -> void:
+	_hide_custom_tooltip()
+	_hide_shift_picker()
+	_disconnect_global_signals()
+	_kill_all_tweens()
+
+func _connect_global_signals() -> void:
 	if LocationManager and not LocationManager.location_data_updated.is_connected(_on_location_data_updated):
 		LocationManager.location_data_updated.connect(_on_location_data_updated)
 	if PlayerData:
@@ -82,12 +111,7 @@ func _ready() -> void:
 	if GameManager and not GameManager.scene_changed.is_connected(_on_scene_changed):
 		GameManager.scene_changed.connect(_on_scene_changed)
 
-	if is_instance_valid(special_tasks_button):
-		special_tasks_button.pressed.connect(_on_special_tasks_button_pressed)
-
-func _exit_tree() -> void:
-	_hide_custom_tooltip()
-	_hide_shift_picker()
+func _disconnect_global_signals() -> void:
 	if LocationManager and LocationManager.location_data_updated.is_connected(_on_location_data_updated):
 		LocationManager.location_data_updated.disconnect(_on_location_data_updated)
 	if PlayerData:
@@ -104,20 +128,15 @@ func _exit_tree() -> void:
 
 func _setup_modern_styling() -> void:
 	var panel_style = StyleBoxFlat.new()
-	panel_style.bg_color = Color(0.32, 0.18, 0.42, 0.88)
-	panel_style.border_width_left = 4
-	panel_style.border_width_top = 4
-	panel_style.border_width_right = 4
-	panel_style.border_width_bottom = 4
-	panel_style.border_color = Color(0.95, 0.7, 1.0, 0.9)
-	panel_style.set_corner_radius_all(22)
-	panel_style.shadow_color = Color(0.5, 0.2, 0.7, 0.5)
-	panel_style.shadow_size = 16
-	panel_style.shadow_offset = Vector2(0, 6)
-	panel_style.content_margin_left = 20
-	panel_style.content_margin_right = 20
-	panel_style.content_margin_top = 16
-	panel_style.content_margin_bottom = 20
+	panel_style.bg_color = Color(0.24, 0.14, 0.32, 0.92)
+	panel_style.border_width_left = 2
+	panel_style.border_width_top = 2
+	panel_style.border_width_right = 2
+	panel_style.border_width_bottom = 2
+	panel_style.border_color = Color(0.95, 0.75, 1.0, 0.6)
+	panel_style.set_corner_radius_all(18)
+	panel_style.shadow_color = Color(0.1, 0.05, 0.2, 0.6)
+	panel_style.shadow_size = 20
 	add_theme_stylebox_override("panel", panel_style)
 
 	if location_name_label:
@@ -132,27 +151,33 @@ func _setup_modern_styling() -> void:
 		_style_special_tasks_button(special_tasks_button)
 
 func _setup_tab_container_styling() -> void:
-	var radius = 12
+	var radius = 14
+
 	var selected = StyleBoxFlat.new()
-	selected.bg_color = Color(0.55, 0.3, 0.7, 0.95)
+	selected.bg_color = Color(0.62, 0.32, 0.78, 0.95)
 	selected.set_corner_radius_all(radius)
-	selected.border_width_top = 3
 	selected.border_width_left = 2
+	selected.border_width_top = 3
 	selected.border_width_right = 2
-	selected.border_color = Color(0.95, 0.7, 1.0, 0.9)
-	selected.content_margin_left = 16
-	selected.content_margin_right = 16
-	selected.content_margin_top = 8
-	selected.content_margin_bottom = 8
+	selected.border_width_bottom = 1
+	selected.border_color = Color(1.0, 0.85, 1.0, 0.95)
+	selected.shadow_color = Color(0.5, 0.18, 0.65, 0.55)
+	selected.shadow_size = 10
+	selected.shadow_offset = Vector2(0, 3)
+	selected.content_margin_left = 18
+	selected.content_margin_right = 18
+	selected.content_margin_top = 10
+	selected.content_margin_bottom = 10
 	job_tiers_tab_container.add_theme_stylebox_override("tab_selected", selected)
 
 	var unselected = StyleBoxFlat.new()
-	unselected.bg_color = Color(0.25, 0.15, 0.35, 0.7)
+	unselected.bg_color = Color(0.22, 0.12, 0.3, 0.65)
 	unselected.set_corner_radius_all(radius)
-	unselected.border_width_top = 1
 	unselected.border_width_left = 1
+	unselected.border_width_top = 1
 	unselected.border_width_right = 1
-	unselected.border_color = Color(0.5, 0.35, 0.6, 0.5)
+	unselected.border_width_bottom = 1
+	unselected.border_color = Color(0.6, 0.45, 0.7, 0.35)
 	unselected.content_margin_left = 16
 	unselected.content_margin_right = 16
 	unselected.content_margin_top = 8
@@ -160,12 +185,15 @@ func _setup_tab_container_styling() -> void:
 	job_tiers_tab_container.add_theme_stylebox_override("tab_unselected", unselected)
 
 	var hover = StyleBoxFlat.new()
-	hover.bg_color = Color(0.45, 0.25, 0.6, 0.9)
+	hover.bg_color = Color(0.48, 0.25, 0.62, 0.85)
 	hover.set_corner_radius_all(radius)
-	hover.border_width_top = 2
 	hover.border_width_left = 2
+	hover.border_width_top = 2
 	hover.border_width_right = 2
-	hover.border_color = Color(0.9, 0.65, 1.0, 0.85)
+	hover.border_width_bottom = 1
+	hover.border_color = Color(0.92, 0.72, 1.0, 0.8)
+	hover.shadow_color = Color(0.4, 0.15, 0.5, 0.35)
+	hover.shadow_size = 6
 	hover.content_margin_left = 16
 	hover.content_margin_right = 16
 	hover.content_margin_top = 8
@@ -173,24 +201,52 @@ func _setup_tab_container_styling() -> void:
 	job_tiers_tab_container.add_theme_stylebox_override("tab_hovered", hover)
 
 	var panel = StyleBoxFlat.new()
-	panel.bg_color = Color(0.28, 0.16, 0.38, 0.55)
-	panel.corner_radius_bottom_left = 12
-	panel.corner_radius_bottom_right = 12
+	panel.bg_color = Color(0.2, 0.1, 0.28, 0.7)
+	panel.set_corner_radius_all(16)
 	panel.border_width_left = 2
+	panel.border_width_top = 2
 	panel.border_width_right = 2
 	panel.border_width_bottom = 2
-	panel.border_color = Color(0.7, 0.45, 0.9, 0.4)
-	panel.content_margin_left = 12
-	panel.content_margin_right = 12
-	panel.content_margin_top = 16
-	panel.content_margin_bottom = 12
+	panel.border_color = Color(0.75, 0.5, 0.95, 0.45)
+	panel.content_margin_left = 16
+	panel.content_margin_right = 16
+	panel.content_margin_top = 18
+	panel.content_margin_bottom = 16
 	job_tiers_tab_container.add_theme_stylebox_override("panel", panel)
 
 	if emoji_font:
 		job_tiers_tab_container.add_theme_font_override("font", emoji_font)
 	job_tiers_tab_container.add_theme_color_override("font_selected_color", Color.WHITE)
-	job_tiers_tab_container.add_theme_color_override("font_unselected_color", Color(0.85, 0.75, 0.95, 0.9))
+	job_tiers_tab_container.add_theme_color_override("font_unselected_color", Color(0.8, 0.7, 0.9, 0.75))
 	job_tiers_tab_container.add_theme_font_size_override("font_size", 15)
+	
+	job_tiers_tab_container.add_theme_constant_override("side_margin", 8)
+	job_tiers_tab_container.add_theme_constant_override("icon_max_width", 0)
+
+	if not job_tiers_tab_container.tab_changed.is_connected(_on_job_tab_changed):
+		job_tiers_tab_container.tab_changed.connect(_on_job_tab_changed)
+
+func animate_entry_list(container: Control) -> void:
+	var delay = 0.0
+	for child in container.get_children():
+		if child is Control:
+			child.modulate.a = 0.0
+			child.position.y += 10.0
+			var tw = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+			tw.tween_property(child, "modulate:a", 1.0, 0.15).set_delay(delay)
+			tw.tween_property(child, "position:y", child.position.y - 10.0, 0.15).set_delay(delay)
+			delay += 0.03
+
+func _on_job_tab_changed(tab_idx: int) -> void:
+	var current_child = job_tiers_tab_container.get_tab_control(tab_idx)
+	if is_instance_valid(current_child):
+		current_child.pivot_offset = current_child.size * 0.5
+		current_child.scale = Vector2(0.97, 0.97)
+		current_child.modulate.a = 0.8
+		
+		var tw = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		tw.tween_property(current_child, "scale", Vector2.ONE, 0.15)
+		tw.tween_property(current_child, "modulate:a", 1.0, 0.15)
 
 func show_panel_animated() -> void:
 	_kill_all_tweens()
@@ -210,6 +266,7 @@ func hide_panel_animated() -> void:
 	_hide_shift_picker()
 	if special_tasks_panel and is_instance_valid(special_tasks_panel) and special_tasks_panel.visible:
 		special_tasks_panel.hide_panel_animated()
+		
 	current_fade_tween = create_tween().set_parallel(true)
 	current_fade_tween.tween_property(self, "modulate:a", 0.0, fade_duration)
 	current_fade_tween.tween_property(self, "scale", Vector2(0.98, 0.98), fade_duration)
@@ -232,14 +289,42 @@ func _kill_all_tweens() -> void:
 	if current_fade_tween and current_fade_tween.is_valid():
 		current_fade_tween.kill()
 		current_fade_tween = null
-	for node in active_button_tweens.keys():
-		var tween = active_button_tweens[node]
+
+	for tween in button_hover_tweens.values():
 		if tween and tween.is_valid():
 			tween.kill()
-	active_button_tweens.clear()
+	button_hover_tweens.clear()
 
-func get_fade_tween() -> Tween:
-	return current_fade_tween
+	for tween in button_pulse_tweens.values():
+		if tween and tween.is_valid():
+			tween.kill()
+	button_pulse_tweens.clear()
+
+func _tween_button_scale(button: Button, target_scale: Vector2) -> void:
+	if !is_instance_valid(button):
+		return
+
+	var button_id := button.get_instance_id()
+	if button_hover_tweens.has(button_id):
+		var old: Tween = button_hover_tweens[button_id]
+		if old and old.is_valid():
+			old.kill()
+
+	var target_rotation := 0.0
+	if target_scale.x > 1.0:
+		target_rotation = randf_range(-1.0, 1.0)
+
+	var tween := create_tween()
+	button_hover_tweens[button_id] = tween
+	tween.set_parallel(true)
+	tween.set_trans(Tween.TRANS_BACK)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(button, "scale", target_scale, 0.15)
+	tween.tween_property(button, "rotation_degrees", target_rotation, 0.15)
+	tween.finished.connect(_on_button_hover_tween_finished.bind(button_id))
+
+func _on_button_hover_tween_finished(button_id: int) -> void:
+	button_hover_tweens.erase(button_id)
 
 func refresh_activities_panel() -> void:
 	if not LocationManager:
@@ -322,6 +407,17 @@ func _clear_activities_panel_content() -> void:
 	_hide_custom_tooltip()
 
 func _clear_all_activity_containers() -> void:
+	# Buttons are about to be freed, so stop every tween targeting them first.
+	for tween in button_hover_tweens.values():
+		if tween and tween.is_valid():
+			tween.kill()
+	button_hover_tweens.clear()
+
+	for tween in button_pulse_tweens.values():
+		if tween and tween.is_valid():
+			tween.kill()
+	button_pulse_tweens.clear()
+
 	_activity_button_map.clear()
 	if is_instance_valid(normal_activities_vbox):
 		for child in normal_activities_vbox.get_children():
@@ -332,7 +428,6 @@ func _clear_all_activity_containers() -> void:
 			for child in tier_vbox.get_children():
 				child.queue_free()
 
-## Accepts activity Dictionary or job_id String
 func _get_job_tier(activity_or_id) -> int:
 	if activity_or_id is Dictionary:
 		if activity_or_id.has("tier"):
@@ -343,18 +438,8 @@ func _get_job_tier(activity_or_id) -> int:
 func _get_job_tier_from_id(job_id: String) -> int:
 	if job_id.is_empty():
 		return 0
-	# New JobDatabase ids
-	if job_id in ["job_cafe_server", "job_shop_assistant", "job_office_clerk"]:
-		return 1
-	if job_id in ["job_barista", "job_cafe_shift_lead", "job_sales_associate", "job_stock_coordinator", "job_junior_analyst", "job_admin_assistant"]:
-		return 2
-	if job_id in ["job_restaurant_supervisor", "job_bartender", "job_store_supervisor", "job_merchandiser", "job_data_analyst", "job_hr_coordinator"]:
-		return 3
-	if job_id in ["job_restaurant_manager", "job_bar_manager", "job_store_manager", "job_regional_buyer", "job_senior_analyst", "job_team_lead"]:
-		return 4
-	if job_id in ["job_hospitality_director", "job_retail_ops_director", "job_ops_manager"]:
-		return 5
-	# Legacy fallback
+	if JOB_TIER_LOOKUP.has(job_id):
+		return JOB_TIER_LOOKUP[job_id]
 	if job_id.begins_with("job_waiter") or job_id.begins_with("job_retail_assistant"):
 		return 1
 	return 0
@@ -443,14 +528,6 @@ func _create_enhanced_button(text: String) -> Button:
 	if emoji_font:
 		button.add_theme_font_override("font", emoji_font)
 
-	button.mouse_entered.connect(func():
-		var t = create_tween()
-		t.tween_property(button, "scale", Vector2(1.03, 1.03), 0.1)
-	)
-	button.mouse_exited.connect(func():
-		var t = create_tween()
-		t.tween_property(button, "scale", Vector2.ONE, 0.1)
-	)
 	return button
 
 func _create_styled_label(text: String) -> Label:
@@ -503,10 +580,11 @@ func _get_requirements_text(activity_data: Dictionary) -> String:
 
 func _show_custom_tooltip(text: String, button: Button) -> void:
 	_hide_custom_tooltip()
-	var layer = CanvasLayer.new()
-	layer.layer = 128
-	layer.name = "TooltipLayer"
-	get_tree().root.add_child(layer)
+	
+	_tooltip_layer = CanvasLayer.new()
+	_tooltip_layer.layer = 128
+	_tooltip_layer.name = "TooltipLayer"
+	get_tree().root.add_child(_tooltip_layer)
 
 	custom_tooltip = PanelContainer.new()
 	custom_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -536,8 +614,7 @@ func _show_custom_tooltip(text: String, button: Button) -> void:
 	label.add_theme_font_size_override("normal_font_size", 14)
 	label.text = text
 	custom_tooltip.add_child(label)
-	layer.add_child(custom_tooltip)
-	custom_tooltip.set_meta("tooltip_layer", layer)
+	_tooltip_layer.add_child(custom_tooltip)
 
 	await get_tree().process_frame
 	if not is_instance_valid(custom_tooltip) or not is_instance_valid(button):
@@ -553,15 +630,18 @@ func _show_custom_tooltip(text: String, button: Button) -> void:
 		pos.x = button_rect.position.x + button_rect.size.x + 12
 	pos.y = clampf(pos.y, 10, screen.y - tooltip_size.y - 10)
 	custom_tooltip.global_position = pos
+	custom_tooltip.modulate.a = 0.0
+	custom_tooltip.scale = Vector2(0.9, 0.9)
+	custom_tooltip.pivot_offset = custom_tooltip.size * 0.5
+
+	var t_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	t_tween.tween_property(custom_tooltip, "modulate:a", 1.0, 0.12)
+	t_tween.tween_property(custom_tooltip, "scale", Vector2.ONE, 0.12)
 
 func _hide_custom_tooltip() -> void:
-	if custom_tooltip and is_instance_valid(custom_tooltip):
-		if custom_tooltip.has_meta("tooltip_layer"):
-			var layer = custom_tooltip.get_meta("tooltip_layer")
-			if is_instance_valid(layer):
-				layer.queue_free()
-		else:
-			custom_tooltip.queue_free()
+	if _tooltip_layer and is_instance_valid(_tooltip_layer):
+		_tooltip_layer.queue_free()
+		_tooltip_layer = null
 	custom_tooltip = null
 
 func _on_activity_button_pressed(activity_data: Dictionary) -> void:
@@ -598,8 +678,18 @@ func _update_button_visual_state(button: Button, activity_data: Dictionary) -> v
 	var is_active = PlayerData.is_activity_active and PlayerData.get_current_activity_name() == activity_data.get("name")
 	var is_accessible = true
 
-	while button.pressed.get_connections().size() > 0:
-		button.pressed.disconnect(button.pressed.get_connections()[0].callable)
+	for conn in button.pressed.get_connections():
+		button.pressed.disconnect(conn.callable)
+	for conn in button.mouse_entered.get_connections():
+		button.mouse_entered.disconnect(conn.callable)
+	for conn in button.mouse_exited.get_connections():
+		button.mouse_exited.disconnect(conn.callable)
+
+	button.mouse_entered.connect(func(): _tween_button_scale(button, Vector2(1.03, 1.03)))
+	button.mouse_exited.connect(func():
+		_tween_button_scale(button, Vector2.ONE)
+		_hide_custom_tooltip()
+	)
 
 	if is_active:
 		button.text = "🛑 Stop " + str(activity_data.get("name", "Activity"))
@@ -613,7 +703,10 @@ func _update_button_visual_state(button: Button, activity_data: Dictionary) -> v
 		active_style.border_width_bottom = 3
 		active_style.border_color = Color(1.0, 0.55, 0.75, 0.9)
 		button.add_theme_stylebox_override("normal", active_style)
+		_start_safe_pulse(button)
 	else:
+		_stop_safe_pulse(button)
+		
 		button.text = "▶ " + str(activity_data.get("name", "Activity"))
 		button.pressed.connect(_on_activity_button_pressed.bind(activity_data))
 
@@ -627,21 +720,6 @@ func _update_button_visual_state(button: Button, activity_data: Dictionary) -> v
 		var money_req = float(activity_data.get("money_requirement", 0.0))
 		if money_req > 0.0 and PlayerData.money < money_req:
 			is_accessible = false
-
-	for conn in button.mouse_entered.get_connections():
-		button.mouse_entered.disconnect(conn.callable)
-	for conn in button.mouse_exited.get_connections():
-		button.mouse_exited.disconnect(conn.callable)
-
-	button.mouse_entered.connect(func():
-		var t = create_tween()
-		t.tween_property(button, "scale", Vector2(1.03, 1.03), 0.1)
-	)
-	button.mouse_exited.connect(func():
-		var t = create_tween()
-		t.tween_property(button, "scale", Vector2.ONE, 0.1)
-		_hide_custom_tooltip()
-	)
 
 	if is_accessible and not is_active:
 		button.disabled = false
@@ -669,6 +747,55 @@ func _update_button_visual_state(button: Button, activity_data: Dictionary) -> v
 		disabled_style.border_color = Color(0.5, 0.35, 0.55, 0.5)
 		button.add_theme_stylebox_override("disabled", disabled_style)
 
+func _start_safe_pulse(button: Button) -> void:
+	if !is_instance_valid(button):
+		return
+
+	var button_id := button.get_instance_id()
+	if button_pulse_tweens.has(button_id):
+		return
+
+	_start_pulse_cycle(button_id)
+
+func _start_pulse_cycle(button_id: int) -> void:
+	var object := instance_from_id(button_id)
+	if object == null or not is_instance_valid(object) or not (object is Button):
+		button_pulse_tweens.erase(button_id)
+		return
+
+	var button := object as Button
+	var tween := create_tween()
+	button_pulse_tweens[button_id] = tween
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(button, "modulate", Color(1.4, 0.7, 1.2, 1.0), 0.6)
+	tween.tween_property(button, "modulate", Color.WHITE, 0.6)
+	tween.finished.connect(_on_pulse_cycle_finished.bind(button_id))
+
+func _on_pulse_cycle_finished(button_id: int) -> void:
+	# Remove the completed finite tween before starting the next cycle.
+	# Using an integer instance ID avoids capturing a Button that may be freed.
+	if not button_pulse_tweens.has(button_id):
+		return
+
+	button_pulse_tweens.erase(button_id)
+	var object := instance_from_id(button_id)
+	if object != null and is_instance_valid(object) and object is Button:
+		_start_pulse_cycle(button_id)
+
+func _stop_safe_pulse(button: Button) -> void:
+	if !is_instance_valid(button):
+		return
+
+	var button_id := button.get_instance_id()
+	if button_pulse_tweens.has(button_id):
+		var tween: Tween = button_pulse_tweens[button_id]
+		if tween and tween.is_valid():
+			tween.kill()
+		button_pulse_tweens.erase(button_id)
+
+	button.modulate = Color.WHITE
+
 func _get_job_display_name(job_id: String) -> String:
 	if not LocationManager:
 		return job_id
@@ -677,6 +804,27 @@ func _get_job_display_name(job_id: String) -> String:
 			if str(activity.get("job_id", "")) == job_id:
 				return str(activity.get("name", job_id))
 	return job_id
+
+func _add_special_tasks_bottom_spacing() -> void:
+	if not is_instance_valid(special_tasks_button):
+		return
+
+	var parent := special_tasks_button.get_parent()
+	if parent is MarginContainer:
+		parent.add_theme_constant_override("margin_bottom", 12)
+		return
+
+	if parent is BoxContainer:
+		var spacer_name := "SpecialTasksBottomSpacer"
+		if parent.has_node(spacer_name):
+			return
+
+		var spacer := Control.new()
+		spacer.name = spacer_name
+		spacer.custom_minimum_size = Vector2(0.0, 12.0)
+		spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		parent.add_child(spacer)
+		parent.move_child(spacer, special_tasks_button.get_index() + 1)
 
 func _style_special_tasks_button(button: Button) -> void:
 	button.focus_mode = Control.FOCUS_NONE
@@ -915,7 +1063,7 @@ func _on_pin_guess_button_pressed() -> void:
 			if won and UIManager and UIManager.has_method("show_notification"):
 				UIManager.show_notification("+1 AP — code cracked!")
 		)
-		
+
 func _update_word_guess_button() -> void:
 	if word_guess_button and is_instance_valid(word_guess_button):
 		word_guess_button.queue_free()

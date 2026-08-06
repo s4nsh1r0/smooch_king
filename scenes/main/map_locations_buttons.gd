@@ -145,26 +145,30 @@ func _start_pulse() -> void:
 	if not is_instance_valid(hover_indicator):
 		return
 
+	# Stop existing tween if running
+	if is_instance_valid(_pulse_tween) and _pulse_tween.is_valid():
+		_pulse_tween.kill()
+
 	var dur = 0.9
+	_pulse_tween = create_tween().set_loops()
 
-	_pulse_tween = create_tween()
-	_pulse_tween.set_loops()
-	_pulse_tween.set_parallel(true)
-
-	# breathe outward + fade slightly
-	_pulse_tween.tween_property(hover_indicator, "modulate:a", 0.65, dur) \
+	# --- STEP 1: Breathe Outward + Fade Out ---
+	_pulse_tween.tween_property(hover_indicator, "modulate:a", 0.65, dur)\
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	
 	for bracket in hover_indicator.get_children():
 		var pulse_pos = bracket.get_meta("pulse_position")
-		_pulse_tween.tween_property(bracket, "position", pulse_pos, dur) \
+		# .parallel() attaches this to run AT THE SAME TIME as the fade above
+		_pulse_tween.parallel().tween_property(bracket, "position", pulse_pos, dur)\
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
-	# breathe back inward + fade back up
-	_pulse_tween.chain().tween_property(hover_indicator, "modulate:a", 1.0, dur) \
+	# --- STEP 2: Breathe Inward + Fade Up (Runs automatically after Step 1 finishes) ---
+	_pulse_tween.tween_property(hover_indicator, "modulate:a", 1.0, dur)\
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	
 	for bracket in hover_indicator.get_children():
 		var final_pos = bracket.get_meta("final_position")
-		_pulse_tween.tween_property(bracket, "position", final_pos, dur) \
+		_pulse_tween.parallel().tween_property(bracket, "position", final_pos, dur)\
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 

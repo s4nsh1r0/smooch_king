@@ -8,12 +8,34 @@ func get_characters() -> Dictionary:
 			"location": "Cafeteria",
 			"image_path": "res://assets/images/characters/cafeteria/hikari/hikari_main.png",
 			"stats_required": {"charisma": 1, "communication": 1},
+			
+			"mood_weights": {
+				"angry": 2,
+				"upset": 8,
+				"neutral": 30,
+				"happy": 40,
+				"excited": 20
+			},
+			
+			# Love Book profile
+			"age": "26",
+			"height": "175 cm",
+			"weight": "61 kg",
+			"hair": "Warm chestnut, long with soft waves",
+			"eyes": "Hazel-green",
+			"body": "Tall and curvaceous",
+			"skin": "White",
+			"bust": "E",
+			"personality": "Warm",
+			"profession": "Barwoman",
+			"hobby": "Baking",
+			
 			"date_images": {
-				"dinner": "res://assets/images/characters/cafeteria/hikari/hikari_dinner.png",
-				"park": "res://assets/images/characters/cafeteria/hikari/hikari_park.png",
-				"beach": "res://assets/images/characters/cafeteria/hikari/hikari_beach.png",
-				"home": "res://assets/images/characters/cafeteria/hikari/hikari_home.png",
-				"kiss": "res://assets/images/characters/cafeteria/hikari/hikari_kiss.png"
+				"dinner": "res://assets/images/characters/cafeteria/hikari/hikari_dinner.jpg",
+				"park": "res://assets/images/characters/cafeteria/hikari/hikari_park.jpg",
+				"beach": "res://assets/images/characters/cafeteria/hikari/hikari_beach.jpg",
+				"home": "res://assets/images/characters/cafeteria/hikari/hikari_home.jpg",
+				"special": "res://assets/images/characters/cafeteria/hikari/hikari_special.jpg"
 			},
 			"dialogue_by_stage": {
 				"Stranger": ["What can I get for you today?", "First time here? The special’s a great choice!", "Careful with the hot coffee—it’s fresh!", "The cafeteria’s buzzing today, isn’t it?"],
@@ -30,13 +52,27 @@ func get_characters() -> Dictionary:
 			"name": "Victoria",
 			"location": "Cafeteria",
 			"image_path": "res://assets/images/characters/cafeteria/victoria/victoria_main.png",
-			"stats_required": {"charisma": 10, "communication": 10},
+			"stats_required": {"persuasion": 20, "communication": 20},
+			
+			# Love Book profile
+			"age": "18",
+			"height": "158 cm",
+			"weight": "48 kg",
+			"hair": "Soft pink, short and fluffy",
+			"eyes": "Light blue",
+			"body": "Petite and soft",
+			"skin": "Fair",
+			"bust": "B",
+			"personality": "Shy",
+			"profession": "Pet Shop Assistant",
+			"hobby": "Animal Welfare",
+			
 			"date_images": {
-				"dinner": "res://assets/images/characters/cafeteria/victoria/victoria_dinner.png",
-				"park": "res://assets/images/characters/cafeteria/victoria/victoria_park.png",
-				"beach": "res://assets/images/characters/cafeteria/victoria/victoria_beach.png",
-				"home": "res://assets/images/characters/cafeteria/victoria/victoria_home.png",
-				"kiss": "res://assets/images/characters/cafeteria/victoria/victoria_kiss.png"
+				"dinner": "res://assets/images/characters/cafeteria/victoria/victoria_dinner.jpg",
+				"park": "res://assets/images/characters/cafeteria/victoria/victoria_park.jpg",
+				"beach": "res://assets/images/characters/cafeteria/victoria/victoria_beach.jpg",
+				"home": "res://assets/images/characters/cafeteria/victoria/victoria_home.jpg",
+				"special": "res://assets/images/characters/cafeteria/victoria/victoria_special.jpg"
 			},
 			"dialogue_by_stage": { # Add dialogue if you want, or leave empty for now
 			}
@@ -46,14 +82,29 @@ func get_characters() -> Dictionary:
 			"name": "Lola",
 			"location": "Cafeteria",
 			"image_path": "res://assets/images/characters/cafeteria/lola/lola_main.png",
-			"stats_required": {"charisma": 1, "communication": 1},
+			"stats_required": {"strength": 80, "leadership": 100},
+			
+			# Love Book profile
+			"age": "22",
+			"height": "170 cm",
+			"weight": "58 kg",
+			"hair": "Short dark brown, slightly messy undercut",
+			"eyes": "Sharp amber",
+			"body": "Athletic with subtle curves",
+			"skin": "Lightly tanned",
+			"bust": "B",
+			"personality": "Straightforward",
+			"profession": "Mechanic",
+			"hobby": "Skateboard",
+			
 			"date_images": {
 				"dinner": "res://assets/images/characters/cafeteria/lola/lola_dinner.jpeg",
 				"park": "res://assets/images/characters/cafeteria/lola/lola_park.jpeg",
 				"beach": "res://assets/images/characters/cafeteria/lola/lola_beach.jpeg",
 				"home": "res://assets/images/characters/cafeteria/lola/lola_home.jpeg",
-				"kiss": "res://assets/images/characters/cafeteria/lola/lola_kiss.jpeg"
+				"special": "res://assets/images/characters/cafeteria/lola/lola_special.jpeg"
 			},
 			"dialogue_by_stage": { }
 		}
 	}
+	

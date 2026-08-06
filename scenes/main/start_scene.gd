@@ -14,6 +14,7 @@ const ConfirmationDialogScene = preload("res://scenes/ui/confirmation_dialogue.t
 
 var slots_scene: Control = null
 var exit_confirmation_dialog: Control = null
+var options_overlay: Control = null
 var selected_slot_id: int = 0
 
 const LOADING_TIME := 2.0
@@ -48,6 +49,7 @@ func _set_state(new_state: State) -> void:
 	current_state = new_state
 	match current_state:
 		State.MAIN_MENU:
+			_hide_options_overlay()
 			new_game_button.visible = true
 			load_game_button.visible = true
 			exit_button.visible = true
@@ -124,6 +126,8 @@ func _on_back_button_pressed() -> void:
 	if current_state == State.NAME_ENTRY:
 		_open_slots()
 	else:
+		if current_state == State.OPTIONS:
+			SoundManager.play_panel_close()
 		_set_state(State.MAIN_MENU)
 	name_input.text = ""
 
@@ -185,6 +189,8 @@ func _reset_player_for_new_game(player_name: String, slot_id: int) -> void:
 
 	PlayerData.player_ap_changed.emit(PlayerData.action_points)
 	PlayerData.player_ap_progress_changed.emit(PlayerData.ap_progress, PlayerData.AP_INTERVAL_SECONDS)
+	if CharacterMoodManager:
+		CharacterMoodManager.reset_all_moods()
 
 func _start_new_game() -> void:
 	loading_label.text = "Entering Paradise City..."
@@ -212,11 +218,75 @@ func _on_load_completed(success: bool, message: String) -> void:
 		_open_slots()
 
 func _on_options_pressed() -> void:
-	# Stub until options panel exists
-	if UIManager:
-		UIManager.show_notification("Options coming soon (music, SFX, fullscreen)")
-	else:
-		print("Options placeholder")
+	_set_state(State.OPTIONS)
+	_show_options_overlay()
+	SoundManager.play_panel_open()
+
+
+func _show_options_overlay() -> void:
+	if not is_instance_valid(options_overlay):
+		options_overlay = _build_options_overlay()
+		add_child(options_overlay)
+	options_overlay.visible = true
+
+
+func _hide_options_overlay() -> void:
+	if is_instance_valid(options_overlay):
+		options_overlay.visible = false
+
+
+func _build_options_overlay() -> Control:
+	var overlay := Control.new()
+	overlay.name = "OptionsOverlay"
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	var panel := PanelContainer.new()
+	panel.custom_minimum_size = Vector2(440, 210)
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.position = Vector2(-220, -105)
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.18, 0.10, 0.28, 0.96)
+	style.border_color = Color(0.95, 0.55, 0.78, 0.9)
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(20)
+	style.set_content_margin_all(28)
+	panel.add_theme_stylebox_override("panel", style)
+	overlay.add_child(panel)
+
+	var content := VBoxContainer.new()
+	content.add_theme_constant_override("separation", 18)
+	panel.add_child(content)
+
+	var title := Label.new()
+	title.text = "AUDIO OPTIONS"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 26)
+	content.add_child(title)
+
+	var volume_label := Label.new()
+	volume_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	content.add_child(volume_label)
+
+	var slider := HSlider.new()
+	slider.min_value = 0.0
+	slider.max_value = 100.0
+	slider.step = 1.0
+	slider.value = SoundManager.get_master_volume() * 100.0
+	slider.custom_minimum_size = Vector2(380, 36)
+	content.add_child(slider)
+	volume_label.text = "Master Volume: %d%%" % int(slider.value)
+	slider.value_changed.connect(func(value: float) -> void:
+		SoundManager.set_master_volume(value / 100.0)
+		volume_label.text = "Master Volume: %d%%" % int(value)
+	)
+
+	var hint := Label.new()
+	hint.text = "Controls music and sound effects"
+	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	hint.modulate = Color(1, 1, 1, 0.7)
+	content.add_child(hint)
+	return overlay
 
 func _on_exit_button_pressed() -> void:
 	if not exit_confirmation_dialog:
@@ -237,6 +307,9 @@ func _input(event: InputEvent) -> void:
 				get_viewport().set_input_as_handled()
 			State.SLOTS:
 				_on_slots_back()
+				get_viewport().set_input_as_handled()
+			State.OPTIONS:
+				_on_back_button_pressed()
 				get_viewport().set_input_as_handled()
 
 func _fade_in_menu() -> void:

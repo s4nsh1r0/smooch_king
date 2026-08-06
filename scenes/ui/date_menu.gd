@@ -8,7 +8,7 @@ signal close_pressed
 @onready var park_button: Button = %ParkButton
 @onready var beach_button: Button = %BeachButton
 @onready var home_button: Button = %HomeButton
-@onready var kiss_button: Button = %KissButton
+@onready var special_button: Button = %SpecialButton
 @onready var close_menu_button: Button = %CloseMenuButton
 @onready var date_popup: Control = %DatePopup
 @onready var date_image: TextureRect = %DateImage
@@ -22,7 +22,7 @@ const DATE_DATA := {
 	"Park": {"ap_cost": 15, "points": 30, "required_level": "Good Friend"},
 	"Beach": {"ap_cost": 20, "points": 40, "required_level": "Crush"},
 	"Home": {"ap_cost": 25, "points": 50, "required_level": "Dating"},
-	"Kiss": {"ap_cost": 50, "points": 100, "required_level": "Soulmate"},
+	"Special": {"ap_cost": 50, "points": 100, "required_level": "Soulmate"},
 }
 
 const DATE_DURATION := 5.0
@@ -41,7 +41,7 @@ func _ready() -> void:
 	emoji_font = _load_font("res://assets/fonts/NotoColorEmoji-Regular.ttf")
 
 	for node in [
-		dinner_button, park_button, beach_button, home_button, kiss_button,
+		dinner_button, park_button, beach_button, home_button, special_button,
 		close_menu_button, date_popup, date_image, date_title, popup_close_button, border_panel
 	]:
 		if not is_instance_valid(node):
@@ -54,7 +54,7 @@ func _ready() -> void:
 	park_button.pressed.connect(_on_date_button_pressed.bind("Park"))
 	beach_button.pressed.connect(_on_date_button_pressed.bind("Beach"))
 	home_button.pressed.connect(_on_date_button_pressed.bind("Home"))
-	kiss_button.pressed.connect(_on_date_button_pressed.bind("Kiss"))
+	special_button.pressed.connect(_on_date_button_pressed.bind("Special"))
 	close_menu_button.pressed.connect(_on_close_menu_button_pressed)
 	popup_close_button.pressed.connect(_on_popup_close_button_pressed)
 	date_image.gui_input.connect(_on_date_image_gui_input)
@@ -116,7 +116,7 @@ func _setup_modern_styling() -> void:
 	disabled.bg_color = Color(0.3, 0.2, 0.35, 0.6)
 	disabled.border_color = Color(0.5, 0.35, 0.55, 0.5)
 
-	for button in [dinner_button, park_button, beach_button, home_button, kiss_button]:
+	for button in [dinner_button, park_button, beach_button, home_button, special_button]:
 		button.add_theme_stylebox_override("normal", normal)
 		button.add_theme_stylebox_override("hover", hover)
 		button.add_theme_stylebox_override("pressed", pressed)
@@ -143,18 +143,6 @@ func _setup_modern_styling() -> void:
 		b.add_theme_stylebox_override("hover", close_hover)
 		b.add_theme_stylebox_override("pressed", close_style)
 		b.add_theme_color_override("font_color", Color.WHITE)
-
-	var border_style = StyleBoxFlat.new()
-	border_style.bg_color = Color(0.12, 0.08, 0.18, 0.97)
-	border_style.border_width_left = 5
-	border_style.border_width_top = 5
-	border_style.border_width_right = 5
-	border_style.border_width_bottom = 5
-	border_style.border_color = Color(1.0, 0.55, 0.85, 0.95)
-	border_style.set_corner_radius_all(18)
-	border_style.shadow_color = Color(1.0, 0.4, 0.75, 0.55)
-	border_style.shadow_size = 22
-	border_panel.add_theme_stylebox_override("panel", border_style)
 
 func _load_font(path: String) -> Font:
 	if ResourceLoader.exists(path):
@@ -256,7 +244,7 @@ func update_date_button_availability() -> void:
 		"ParkButton": {"type": "Park", "emoji": "🌳"},
 		"BeachButton": {"type": "Beach", "emoji": "🏖️"},
 		"HomeButton": {"type": "Home", "emoji": "🏠"},
-		"KissButton": {"type": "Kiss", "emoji": "💋"},
+		"SpecialButton": {"type": "Special", "emoji": "💋"},
 	}
 
 	for button_name in buttons:
@@ -450,7 +438,7 @@ func _create_modern_gradient_texture(date_type: String) -> void:
 		"Park": [Color("#A8E6CF"), Color("#56C596")],
 		"Beach": [Color("#74B9FF"), Color("#0984E3")],
 		"Home": [Color("#FD79A8"), Color("#E84393")],
-		"Kiss": [Color("#FDCB6E"), Color("#E17055")],
+		"Special": [Color("#FDCB6E"), Color("#E17055")],
 	}
 	var colors = color_schemes.get(date_type, color_schemes["Dinner"])
 	gradient.colors = colors

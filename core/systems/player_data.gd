@@ -29,7 +29,7 @@ var money: float:
 		player_money_changed.emit(_money)
 
 # Action Points — 1 AP / 10 min, uncapped
-const AP_STARTING: int = 50
+const AP_STARTING: int = 150
 const AP_INTERVAL_SECONDS: float = 600.0
 
 var _action_points: int = AP_STARTING
@@ -181,13 +181,6 @@ func get_ap_progress() -> float:
 
 func get_ap_interval() -> float:
 	return AP_INTERVAL_SECONDS
-
-# Compatibility aliases (old stamina call sites)
-func consume_stamina(amount: float) -> bool:
-	return consume_ap(int(ceil(amount)))
-
-func restore_stamina(amount: float) -> void:
-	add_ap(int(ceil(amount)))
 
 # ---------- Activity slot ----------
 
@@ -524,8 +517,6 @@ func load_data(data: Dictionary) -> void:
 
 	if data.has("action_points"):
 		_action_points = int(data.get("action_points", AP_STARTING))
-	elif data.has("stamina"):
-		_action_points = int(ceil(float(data.get("stamina", AP_STARTING))))
 	else:
 		_action_points = AP_STARTING
 
@@ -797,30 +788,73 @@ func get_job_hours_worked(job_id: String) -> float:
 
 # ---------- Relationships ----------
 
-func add_relationship_points(character_id: String, amount: int) -> void:
-	var old_points = relationships.get(character_id, 0)
-	var max_points = RELATIONSHIP_STAGES.keys().max()
-	relationships[character_id] = mini(old_points + amount, max_points)
-	player_relationship_stage_changed.emit(character_id, get_relationship_stage(character_id))
+func add_relationship_points(character_id: String, amount: float) -> void:
+	var old_points := float(relationships.get(character_id, 0.0))
+	var max_points := float(RELATIONSHIP_STAGES.keys().max())
 
-func get_relationship_points(character_id: String) -> int:
-	return int(relationships.get(character_id, 0))
+	relationships[character_id] = minf(
+		old_points + amount,
+		max_points
+	)
 
-func get_relationship_stage_for_points(points: int) -> String:
-	var thresholds = RELATIONSHIP_STAGES.keys()
+	player_relationship_stage_changed.emit(
+		character_id,
+		get_relationship_stage(character_id)
+	)
+
+
+func add_talk_relationship_points(
+	character_id: String,
+	base_amount: float = 1.0
+) -> float:
+	if character_id.is_empty():
+		return 0.0
+
+	var multiplier := 1.0
+
+	if CharacterMoodManager:
+		multiplier = CharacterMoodManager.get_mood_multiplier(
+			character_id
+		)
+
+	var gained_points := base_amount * multiplier
+
+	if gained_points > 0.0:
+		add_relationship_points(character_id, gained_points)
+
+	return gained_points
+
+
+func get_relationship_points(character_id: String) -> float:
+	return float(relationships.get(character_id, 0.0))
+
+
+func get_relationship_points_display(character_id: String) -> int:
+	return int(floor(get_relationship_points(character_id)))
+
+
+func get_relationship_stage_for_points(points: float) -> String:
+	var thresholds := RELATIONSHIP_STAGES.keys()
 	thresholds.sort()
 	thresholds.reverse()
+
 	for threshold in thresholds:
-		if points >= threshold:
+		if points >= float(threshold):
 			return RELATIONSHIP_STAGES[threshold]
+
 	return "Stranger"
 
+
 func get_relationship_stage(character_id: String) -> String:
-	return get_relationship_stage_for_points(get_relationship_points(character_id))
+	return get_relationship_stage_for_points(
+		get_relationship_points(character_id)
+	)
+
 
 func can_progress_relationship(character_id: String) -> bool:
-	return get_relationship_points(character_id) < RELATIONSHIP_STAGES.keys().max()
-
+	var max_points := float(RELATIONSHIP_STAGES.keys().max())
+	return get_relationship_points(character_id) < max_points
+	
 func mark_date_completed(character_id: String, date_name: String) -> void:
 	if not completed_dates.has(character_id):
 		completed_dates[character_id] = []

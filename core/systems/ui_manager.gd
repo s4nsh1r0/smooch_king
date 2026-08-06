@@ -364,6 +364,7 @@ func update_character_in_love_book(character_id: String) -> void:
 
 func _toggle_panel(panel: Node, resource: Resource, path: String, panel_var_name: String) -> void:
 	if panel and is_instance_valid(panel):
+		SoundManager.play_panel_close()
 		if panel.has_method("hide_panel_animated"):
 			panel.hide_panel_animated()
 			await _wait_for_fade_out(panel)
@@ -378,6 +379,7 @@ func _toggle_panel(panel: Node, resource: Resource, path: String, panel_var_name
 
 	_ensure_main_canvas()
 	var new_panel = resource.instantiate()
+	SoundManager.play_panel_open()
 	new_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	main_canvas.add_child(new_panel)
 	new_panel.modulate.a = 0.0
@@ -704,6 +706,7 @@ func show_map() -> void:
 		GameManager.change_to_scene(MAP_SCENE_PATH)
 
 func show_notification(message: String, duration: float = 4.0) -> void:
+	SoundManager.play_notification()
 	var parent: Node = get_tree().root
 	if main_canvas and is_instance_valid(main_canvas):
 		parent = main_canvas

@@ -1,118 +1,308 @@
 extends Button
 class_name CharacterListItem
 
-@onready var character_name_label: Label = %CharacterNameLabel
-@onready var unlock_info_label: Label = %UnlockInfoLabel
-@onready var status_icon: Label = %StatusIcon
-@onready var progress_bars_container: VBoxContainer = %ProgressBarsContainer
-
 signal character_selected(character_data: Dictionary)
 
+const MOOD_DATA := {
+	"angry": {
+		"label": "Angry",
+		"multiplier": 0.0,
+		"color": Color(0.95, 0.30, 0.36, 1.0),
+		"background": Color(0.34, 0.10, 0.15, 0.96)
+	},
+	"upset": {
+		"label": "Upset",
+		"multiplier": 0.5,
+		"color": Color(0.95, 0.58, 0.32, 1.0),
+		"background": Color(0.34, 0.19, 0.10, 0.96)
+	},
+	"neutral": {
+		"label": "Neutral",
+		"multiplier": 1.0,
+		"color": Color(0.72, 0.75, 0.86, 1.0),
+		"background": Color(0.20, 0.20, 0.30, 0.96)
+	},
+	"happy": {
+		"label": "Happy",
+		"multiplier": 1.5,
+		"color": Color(0.42, 0.94, 0.66, 1.0),
+		"background": Color(0.10, 0.31, 0.22, 0.96)
+	},
+	"excited": {
+		"label": "Excited",
+		"multiplier": 2.0,
+		"color": Color(1.00, 0.76, 0.32, 1.0),
+		"background": Color(0.36, 0.25, 0.08, 0.96)
+	}
+}
+
+@onready var character_name_label: Label = %CharacterNameLabel
+@onready var character_details_label: Label = %CharacterDetailsLabel
+@onready var mood_panel: PanelContainer = %MoodPanel
+@onready var mood_dot: ColorRect = %MoodDot
+@onready var mood_label: Label = %MoodLabel
+@onready var mood_multiplier_label: Label = %MoodMultiplierLabel
+@onready var lock_icon: Label = %LockIcon
+@onready var accent_line: ColorRect = %AccentLine
+
 var character_data: Dictionary = {}
-var is_hovering: bool = false
-var underline_top: ColorRect = null
-var underline_bottom: ColorRect = null
-var underline_tween: Tween = null
+var current_mood: String = "neutral"
 var custom_tooltip: PanelContainer = null
+var hover_tween: Tween = null
+
 
 func _ready() -> void:
 	pressed.connect(_on_button_pressed)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
+	_apply_mood_visuals("neutral")
 
-	if unlock_info_label:
-		unlock_info_label.hide()
-	if progress_bars_container:
-		progress_bars_container.hide()
-
-	_create_underlines()
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_RESIZED:
-		_update_underline_positions()
 
 func _exit_tree() -> void:
 	_hide_custom_tooltip()
-	if underline_tween and underline_tween.is_valid():
-		underline_tween.kill()
+	_kill_hover_tween()
 
-func set_character_data(data: Dictionary, revealed: bool, _unlock_text: String = "") -> void:
+
+func set_character_data(
+	data: Dictionary,
+	revealed: bool,
+	_unlock_text: String = ""
+) -> void:
 	character_data = data
-	var character_name = str(data.get("name", "Unknown Character"))
 
 	if mouse_entered.is_connected(_on_locked_hover_enter):
 		mouse_entered.disconnect(_on_locked_hover_enter)
-	if mouse_exited.is_connected(_hide_custom_tooltip):
-		mouse_exited.disconnect(_hide_custom_tooltip)
 
 	if revealed:
-		character_name_label.text = character_name
-		if status_icon:
-			status_icon.hide()
-		disabled = false
-		modulate = Color.WHITE
-		custom_minimum_size.y = 56
-		tooltip_text = ""
+		_apply_revealed_character(data)
 	else:
-		character_name_label.text = "???"
-		if status_icon:
-			status_icon.text = "🔒"
-			status_icon.modulate = Color(1.0, 0.7, 0.8, 0.9)
-			status_icon.show()
-		disabled = true
-		modulate = Color(0.75, 0.7, 0.8, 0.9)
-		custom_minimum_size.y = 56
+		_apply_locked_character(data)
+
+
+func set_mood(mood_name: String) -> void:
+	current_mood = mood_name.to_lower()
+
+	if not MOOD_DATA.has(current_mood):
+		current_mood = "neutral"
+
+	_apply_mood_visuals(current_mood)
+
+
+func get_mood_multiplier() -> float:
+	var mood: Dictionary = MOOD_DATA.get(current_mood, MOOD_DATA["neutral"])
+	return float(mood.get("multiplier", 1.0))
+
+
+func _apply_revealed_character(data: Dictionary) -> void:
+	var character_name := str(data.get("name", "Unknown"))
+	var age := str(data.get("age", "—"))
+	var profession := str(data.get("profession", "Unknown profession"))
+
+	character_name_label.text = character_name
+	character_details_label.text = "%s  •  %s" % [age, profession]
+
+	lock_icon.hide()
+	mood_panel.show()
+
+	disabled = false
+	modulate = Color.WHITE
+	tooltip_text = ""
+
+	# This already supports mood data once it is added to the character state.
+	set_mood(str(data.get("mood", "neutral")))
+
+
+func _apply_locked_character(_data: Dictionary) -> void:
+	character_name_label.text = "Unknown Character"
+	character_details_label.text = "Meet the requirements to reveal"
+
+	lock_icon.show()
+	mood_panel.hide()
+
+	disabled = true
+	modulate = Color(0.72, 0.68, 0.78, 0.92)
+
+	if not mouse_entered.is_connected(_on_locked_hover_enter):
 		mouse_entered.connect(_on_locked_hover_enter)
-		mouse_exited.connect(_hide_custom_tooltip)
+
+
+func _apply_mood_visuals(mood_name: String) -> void:
+	if not is_node_ready():
+		return
+
+	var mood: Dictionary = MOOD_DATA.get(mood_name, MOOD_DATA["neutral"])
+	var mood_color: Color = mood.get("color", Color.WHITE)
+	var mood_background: Color = mood.get(
+		"background",
+		Color(0.20, 0.20, 0.30, 0.96)
+	)
+	var multiplier := float(mood.get("multiplier", 1.0))
+
+	mood_dot.color = mood_color
+	mood_label.text = str(mood.get("label", "Neutral"))
+	mood_label.add_theme_color_override("font_color", mood_color)
+	mood_multiplier_label.text = "×%s" % _format_multiplier(multiplier)
+	mood_multiplier_label.add_theme_color_override(
+		"font_color",
+		mood_color.lightened(0.12)
+	)
+
+	var mood_style := StyleBoxFlat.new()
+	mood_style.bg_color = mood_background
+	mood_style.border_color = mood_color.darkened(0.10)
+	mood_style.set_border_width_all(1)
+	mood_style.set_corner_radius_all(12)
+	mood_style.content_margin_left = 9
+	mood_style.content_margin_right = 9
+	mood_style.content_margin_top = 4
+	mood_style.content_margin_bottom = 4
+	mood_panel.add_theme_stylebox_override("panel", mood_style)
+
+
+func _format_multiplier(value: float) -> String:
+	if is_equal_approx(value, floorf(value)):
+		return "%.0f" % value
+	return "%.1f" % value
+
+
+func _on_button_pressed() -> void:
+	if disabled:
+		return
+
+	character_selected.emit(character_data)
+
+
+func _on_mouse_entered() -> void:
+	if disabled:
+		return
+
+	_kill_hover_tween()
+
+	hover_tween = create_tween()
+	hover_tween.set_parallel(true)
+	hover_tween.set_trans(Tween.TRANS_CUBIC)
+	hover_tween.set_ease(Tween.EASE_OUT)
+
+	hover_tween.tween_property(
+		accent_line,
+		"modulate:a",
+		1.0,
+		0.18
+	)
+	hover_tween.tween_property(
+		mood_panel,
+		"modulate",
+		Color(1.08, 1.08, 1.08, 1.0),
+		0.18
+	)
+	hover_tween.tween_property(
+		character_name_label,
+		"position:x",
+		3.0,
+		0.18
+	)
+
+
+func _on_mouse_exited() -> void:
+	_hide_custom_tooltip()
+	_kill_hover_tween()
+
+	hover_tween = create_tween()
+	hover_tween.set_parallel(true)
+	hover_tween.set_trans(Tween.TRANS_CUBIC)
+	hover_tween.set_ease(Tween.EASE_OUT)
+
+	hover_tween.tween_property(
+		accent_line,
+		"modulate:a",
+		0.35,
+		0.16
+	)
+	hover_tween.tween_property(
+		mood_panel,
+		"modulate",
+		Color.WHITE,
+		0.16
+	)
+	hover_tween.tween_property(
+		character_name_label,
+		"position:x",
+		0.0,
+		0.16
+	)
+
+
+func _kill_hover_tween() -> void:
+	if hover_tween and hover_tween.is_valid():
+		hover_tween.kill()
+	hover_tween = null
+
 
 func _on_locked_hover_enter() -> void:
 	if disabled:
-		_show_custom_tooltip(_build_requirements_tooltip(character_data))
+		_show_custom_tooltip(
+			_build_requirements_tooltip(character_data)
+		)
+
 
 func _build_requirements_tooltip(data: Dictionary) -> String:
 	var stats_required = data.get("stats_required", {})
+
 	if not stats_required is Dictionary or stats_required.is_empty():
 		return "[b][color=#f0c0ff]Requirements[/color][/b]\nUnknown"
 
-	var lines: PackedStringArray = ["[b][color=#f0c0ff]Requirements[/color][/b]"]
+	var lines := PackedStringArray([
+		"[b][color=#f0c0ff]Requirements[/color][/b]"
+	])
+
 	for stat_name in stats_required:
-		var required = int(stats_required[stat_name])
-		var current = int(PlayerData.get_stat(str(stat_name))) if PlayerData else 0
+		var required := int(stats_required[stat_name])
+		var current := (
+			int(PlayerData.get_stat(str(stat_name)))
+			if PlayerData
+			else 0
+		)
+
 		if current >= required:
-			lines.append("[color=#70ff90]✓ %s: %d / %d[/color]" % [str(stat_name).capitalize(), current, required])
+			lines.append(
+				"[color=#70ff90]✓ %s: %d / %d[/color]"
+				% [str(stat_name).capitalize(), current, required]
+			)
 		else:
-			lines.append("[color=#ff7070]✗ %s: %d / %d[/color]" % [str(stat_name).capitalize(), current, required])
+			lines.append(
+				"[color=#ff7070]✗ %s: %d / %d[/color]"
+				% [str(stat_name).capitalize(), current, required]
+			)
+
 	return "\n".join(lines)
+
 
 func _show_custom_tooltip(content: String) -> void:
 	_hide_custom_tooltip()
 
-	var layer = CanvasLayer.new()
+	var layer := CanvasLayer.new()
 	layer.layer = 128
-	layer.name = "CharTooltipLayer"
+	layer.name = "CharacterRequirementsTooltipLayer"
 	get_tree().root.add_child(layer)
 
 	custom_tooltip = PanelContainer.new()
 	custom_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	custom_tooltip.custom_minimum_size = Vector2(240, 0)
 
-	var style = StyleBoxFlat.new()
-	style.bg_color = Color(0.28, 0.15, 0.38, 0.97)
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.16, 0.10, 0.24, 0.98)
+	style.border_color = Color(0.92, 0.66, 1.0, 0.90)
+	style.set_border_width_all(2)
 	style.set_corner_radius_all(12)
-	style.border_width_left = 2
-	style.border_width_top = 2
-	style.border_width_right = 2
-	style.border_width_bottom = 2
-	style.border_color = Color(0.95, 0.7, 1.0, 0.85)
 	style.content_margin_left = 14
 	style.content_margin_right = 14
 	style.content_margin_top = 10
 	style.content_margin_bottom = 10
-	style.shadow_color = Color(0.3, 0.1, 0.45, 0.5)
+	style.shadow_color = Color(0.10, 0.03, 0.18, 0.65)
 	style.shadow_size = 10
 	custom_tooltip.add_theme_stylebox_override("panel", style)
 
-	var label = RichTextLabel.new()
+	var label := RichTextLabel.new()
 	label.bbcode_enabled = true
 	label.fit_content = true
 	label.scroll_active = false
@@ -126,19 +316,27 @@ func _show_custom_tooltip(content: String) -> void:
 	custom_tooltip.set_meta("tooltip_layer", layer)
 
 	await get_tree().process_frame
+
 	if not is_instance_valid(custom_tooltip):
 		return
 
-	var rect = get_global_rect()
-	var tip_size = custom_tooltip.size
-	var pos = Vector2(
-		rect.position.x + (rect.size.x - tip_size.x) * 0.5,
-		rect.position.y - tip_size.y - 8
+	var item_rect := get_global_rect()
+	var tooltip_size := custom_tooltip.size
+	var tooltip_position := Vector2(
+		item_rect.position.x
+			+ (item_rect.size.x - tooltip_size.x) * 0.5,
+		item_rect.position.y - tooltip_size.y - 8
 	)
-	var screen = get_viewport().get_visible_rect().size
-	pos.x = clampf(pos.x, 8, screen.x - tip_size.x - 8)
-	pos.y = maxf(pos.y, 8)
-	custom_tooltip.global_position = pos
+	var viewport_size := get_viewport().get_visible_rect().size
+
+	tooltip_position.x = clampf(
+		tooltip_position.x,
+		8.0,
+		viewport_size.x - tooltip_size.x - 8.0
+	)
+	tooltip_position.y = maxf(tooltip_position.y, 8.0)
+	custom_tooltip.global_position = tooltip_position
+
 
 func _hide_custom_tooltip() -> void:
 	if custom_tooltip and is_instance_valid(custom_tooltip):
@@ -146,83 +344,7 @@ func _hide_custom_tooltip() -> void:
 			var layer = custom_tooltip.get_meta("tooltip_layer")
 			if is_instance_valid(layer):
 				layer.queue_free()
-		elif is_instance_valid(custom_tooltip):
+		else:
 			custom_tooltip.queue_free()
+
 	custom_tooltip = null
-
-# ---------- Underline hover ----------
-
-func _create_underlines() -> void:
-	underline_top = ColorRect.new()
-	underline_top.color = Color(1.0, 0.55, 0.85, 0.95)
-	underline_top.size = Vector2(0, 2)
-	underline_top.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	underline_top.z_index = 10
-	add_child(underline_top)
-
-	underline_bottom = ColorRect.new()
-	underline_bottom.color = Color(0.75, 0.45, 1.0, 0.95)
-	underline_bottom.size = Vector2(0, 2)
-	underline_bottom.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	underline_bottom.z_index = 10
-	add_child(underline_bottom)
-
-	_update_underline_positions()
-
-func _update_underline_positions() -> void:
-	if not is_instance_valid(underline_top) or not is_instance_valid(underline_bottom):
-		return
-	var w = size.x
-	var h = size.y
-	underline_top.position = Vector2(w * 0.5, 5)
-	underline_top.size = Vector2(0, 2)
-	underline_bottom.position = Vector2(w * 0.5, h - 7)
-	underline_bottom.size = Vector2(0, 2)
-
-func _on_mouse_entered() -> void:
-	if disabled:
-		return
-	is_hovering = true
-	_animate_hover_enter()
-
-func _on_mouse_exited() -> void:
-	is_hovering = false
-	_animate_hover_exit()
-
-func _animate_hover_enter() -> void:
-	if underline_tween and underline_tween.is_valid():
-		underline_tween.kill()
-	_update_underline_positions()
-
-	var target_width = maxf(size.x - 20, 0)
-	var start_x = 10.0
-	underline_tween = create_tween().set_parallel(true)
-	underline_tween.tween_property(underline_top, "size:x", target_width, 0.28)\
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	underline_tween.tween_property(underline_top, "position:x", start_x, 0.28)\
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	underline_tween.tween_property(underline_bottom, "size:x", target_width, 0.28)\
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	underline_tween.tween_property(underline_bottom, "position:x", start_x, 0.28)\
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	underline_tween.tween_property(self, "modulate", Color(1.12, 1.05, 1.18, 1.0), 0.2)
-
-func _animate_hover_exit() -> void:
-	if underline_tween and underline_tween.is_valid():
-		underline_tween.kill()
-	var center_x = size.x * 0.5
-	underline_tween = create_tween().set_parallel(true)
-	underline_tween.tween_property(underline_top, "size:x", 0.0, 0.22)\
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	underline_tween.tween_property(underline_top, "position:x", center_x, 0.22)\
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	underline_tween.tween_property(underline_bottom, "size:x", 0.0, 0.22)\
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	underline_tween.tween_property(underline_bottom, "position:x", center_x, 0.22)\
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	underline_tween.tween_property(self, "modulate", Color.WHITE, 0.2)
-
-func _on_button_pressed() -> void:
-	if disabled:
-		return
-	character_selected.emit(character_data)

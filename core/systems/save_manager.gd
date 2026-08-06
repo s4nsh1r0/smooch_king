@@ -101,8 +101,15 @@ func save_to_slot(slot_id: int, player_data_node: Node) -> Dictionary:
 		player_data_node.current_slot_id = slot_id
 
 	var save_data = player_data_node.save_data()
+
+	# Persist every character's current mood and hourly mood timestamp.
+	if CharacterMoodManager:
+		save_data["character_moods"] = CharacterMoodManager.get_save_data()
+	else:
+		save_data["character_moods"] = {}
+
 	save_data["save_timestamp"] = Time.get_unix_time_from_system()
-	save_data["game_version"] = "1.1"
+	save_data["game_version"] = "1.2"
 	save_data["current_slot_id"] = slot_id
 
 	var path = get_slot_path(slot_id)
@@ -163,6 +170,16 @@ func load_game(save_path: String) -> void:
 	
 	if data and PlayerData:
 		PlayerData.load_data(data)
+
+		# Restore mood state. Older saves without this key start with
+		# fresh neutral moods and receive normal hourly updates afterward.
+		if CharacterMoodManager:
+			var saved_moods = data.get("character_moods", {})
+			if saved_moods is Dictionary:
+				CharacterMoodManager.load_save_data(saved_moods)
+			else:
+				CharacterMoodManager.reset_all_moods()
+
 		# Ensure slot id from path if missing
 		if PlayerData.current_slot_id < 1:
 			var fname = save_path.get_file()
